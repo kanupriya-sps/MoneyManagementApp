@@ -1,11 +1,20 @@
 import React from "react";
-import { StyleSheet, View, Dimensions, Image, Text, ImageBackground, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Dimensions, Image, Text, ImageBackground, TouchableOpacity, FlatList } from "react-native";
 
 const HomeScreen = ({ navigation }) => {
+
+    const dataList = ['Today', 'Week', 'Month', 'Year'];
 
     const onPressViewAll = () => {
         navigation.navigate('Transactions')
     }
+    const ListItem = ({ item }) => {
+        return (
+            <TouchableOpacity style={styles.itemContainer}>
+                <Text style={{fontSize:14, color:'#FFFFFF'}}>{item}</Text>
+            </TouchableOpacity>
+        )
+    };
 
     return (
         <View style={styles.fullScreenContainer}>
@@ -48,6 +57,14 @@ const HomeScreen = ({ navigation }) => {
                         </View>
                     </View>
                 </ImageBackground>
+            </View>
+            <View style={styles.timeContainer}>
+            <FlatList
+                    data={dataList}
+                    renderItem={ListItem}
+                    keyExtractor={(item, index) => index.toString()}
+                    horizontal={true}
+                />
             </View>
             <View style={styles.transactionHeadingContainer}>
                 <Text style={{ fontSize: 14, fontFamily: 'Inter' }}>Recent Transaction</Text>
@@ -177,14 +194,31 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    timeContainer: {
+        borderWidth: 1,
+        borderColor: 'white',
+        borderRadius: 16,
+        height: 34,
+        marginTop: 30,
+        marginHorizontal: 7,
+        flexDirection: 'column',
+    },
+    itemContainer: {
+        height: 34,
+        backgroundColor: 'black',
+        justifyContent: 'center',
+        borderRadius: 16,
+        paddingVertical: 8,
+        paddingHorizontal: 24
+    },
     transactionHeadingContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         padding: 20,
-        marginTop: 30
+        marginTop: 15
     },
     transactionsContainer: {
-        marginTop: 20,
+        marginTop: 10,
         flexDirection: 'column',
         justifyContent: 'center',
         rowGap: 18,
