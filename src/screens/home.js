@@ -22,7 +22,7 @@ const HomeScreen = ({ navigation }) => {
                                 </View>
                             </View>
                         </View>
-                        <View style={{ flex: 2 }}>
+                        <View style={{ flex: 2, paddingTop: 12 }}>
                             <Text style={{ fontSize: 15 }}>KANUPRIYA</Text>
                         </View>
                     </View>
@@ -57,25 +57,25 @@ const HomeScreen = ({ navigation }) => {
             </View>
             <View style={styles.transactionsContainer}>
                 <View style={styles.singleTransactionContainer}>
-                    <View style={{flex:1.2, height:40, width:40, borderRadius:20, backgroundColor:'#FFF6E5', justifyContent: 'center', alignItems:'center', marginLeft:10}}> 
+                    <View style={{ flex: 1.2, height: 40, width: 40, borderRadius: 20, backgroundColor: '#FFF6E5', justifyContent: 'center', alignItems: 'center', marginLeft: 10 }}>
                         <Image source={require('../assets/icons/arrow-down.png')} style={styles.transactionArrowImage} />
                     </View>
-                    <Text style={{flex:5.5, fontSize:22}}>₹ 15000</Text>
-                    <Text style={{flex:2, fontSize:15, color:'#767474'}}>Income</Text>
+                    <Text style={{ flex: 5.5, fontSize: 22 }}>₹ 15000</Text>
+                    <Text style={{ flex: 2, fontSize: 15, color: '#767474' }}>Income</Text>
                 </View>
                 <View style={styles.singleTransactionContainer}>
-                    <View style={{flex:1.2, height:40, width:40, borderRadius:20, backgroundColor:'#FFF6E5', justifyContent: 'center', alignItems:'center', marginLeft:10}}> 
+                    <View style={{ flex: 1.2, height: 40, width: 40, borderRadius: 20, backgroundColor: '#FFF6E5', justifyContent: 'center', alignItems: 'center', marginLeft: 10 }}>
                         <Image source={require('../assets/icons/arrow-up.png')} style={styles.transactionArrowImage} />
                     </View>
-                    <Text style={{flex:5.5, fontSize:22}}>₹ 6500</Text>
-                    <Text style={{flex:2, fontSize:15, color:'#767474'}}>Food</Text>
+                    <Text style={{ flex: 5.5, fontSize: 22 }}>₹ 6500</Text>
+                    <Text style={{ flex: 2, fontSize: 15, color: '#767474' }}>Food</Text>
                 </View>
                 <View style={styles.singleTransactionContainer}>
-                    <View style={{flex:1.2, height:40, width:40, borderRadius:20, backgroundColor:'#FFF6E5', justifyContent: 'center', alignItems:'center', marginLeft:10}}> 
+                    <View style={{ flex: 1.2, height: 40, width: 40, borderRadius: 20, backgroundColor: '#FFF6E5', justifyContent: 'center', alignItems: 'center', marginLeft: 10 }}>
                         <Image source={require('../assets/icons/arrow-down.png')} style={styles.transactionArrowImage} />
                     </View>
-                    <Text style={{flex:5.5, fontSize:22}}>₹ 28000</Text>
-                    <Text style={{flex:2, fontSize:15, color:'#767474'}}>Income</Text>
+                    <Text style={{ flex: 5.5, fontSize: 22 }}>₹ 28000</Text>
+                    <Text style={{ flex: 2, fontSize: 15, color: '#767474' }}>Income</Text>
                 </View>
             </View>
         </View>
@@ -200,13 +200,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
-        columnGap:10
+        columnGap: 10
     },
     transactionArrowImage: {
         width: '50%',
         height: '50%',
-        resizeMode: 'stretch', 
-        transform: [{ rotate: '180deg' }] 
+        resizeMode: 'stretch',
+        transform: [{ rotate: '180deg' }]
     }
 });
 

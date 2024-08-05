@@ -1,4 +1,5 @@
 import React from 'react';
+import { Image, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -22,23 +23,57 @@ function TabNavigator() {
             <Tab.Screen name="HomeScreen" component={HomeScreen}
                 options={{
                     title: 'Home',
-                    headerShown: false
+                    headerShown: false,
+                    tabBarIcon: ({ focused }) => (
+                        <Image
+                            source={require('../assets/icons/home.png')}
+                            style={{ width: 25, height: 25, tintColor: focused ? '#7F3DFF' : 'grey' }}
+                        />
+                    )
                 }} />
             <Tab.Screen name="TransactionsScreen" component={TransactionsScreen}
                 options={{
-                    title: 'Transaction'
+                    title: 'Transaction',
+                    tabBarIcon: ({ focused }) => (
+                        <Image
+                            source={require('../assets/icons/transaction.png')}
+                            style={{ width: 25, height: 25, tintColor: focused ? '#7F3DFF' : 'grey' }}
+                        />
+                    )
                 }} />
             <Tab.Screen name="AddTransactionScreen" component={AddTransactionScreen}
                 options={{
-                    title: 'Add'
+                    tabBarLabel: '',
+                    tabBarIcon: ({ focused }) => (
+                        <View style={{height: 70, width: 70, borderRadius: 35, backgroundColor: '#A89696', justifyContent:'center' ,alignItems:'center'}}>
+                            <View style={{ height: 50, width: 50, borderRadius: 25, backgroundColor: '#7F3DFF',justifyContent:'center', alignItems:'center'}}>
+                                <Image
+                                    source={require('../assets/icons/plus.png')}
+                                    style={{ width: 25, height: 25, tintColor: focused ? 'white' : 'white', alignSelf: 'center' }}
+                                />
+                            </View>
+                        </View>
+                    )
                 }} />
             <Tab.Screen name="StatiticsScreen" component={StatiticsScreen}
                 options={{
-                    title: 'Statitics'
+                    title: 'Statitics',
+                    tabBarIcon: ({ focused }) => (
+                        <Image
+                            source={require('../assets/icons/pie-chart.png')}
+                            style={{ width: 25, height: 25, tintColor: focused ? '#7F3DFF' : 'grey' }}
+                        />
+                    )
                 }} />
             <Tab.Screen name="ProfileScreen" component={ProfileScreen}
                 options={{
-                    title: 'Profile'
+                    title: 'Profile',
+                    tabBarIcon: ({ focused }) => (
+                        <Image
+                            source={require('../assets/icons/user.png')}
+                            style={{ width: 25, height: 25, tintColor: focused ? '#7F3DFF' : 'grey' }}
+                        />
+                    )
                 }} />
         </Tab.Navigator>
     );
