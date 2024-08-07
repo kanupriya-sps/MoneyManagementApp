@@ -57,7 +57,11 @@ function TabNavigator() {
                 }} />
             <Tab.Screen name="StatiticsScreen" component={StatiticsScreen}
                 options={{
-                    title: 'Statitics',
+                    title: 'Financial Report',
+                    headerStyle: {
+                        backgroundColor: '#FFF6E5',
+                    },
+                    tabBarLabel: 'Statitics',
                     tabBarIcon: ({ focused }) => (
                         <Image
                             source={require('../assets/icons/pie-chart.png')}

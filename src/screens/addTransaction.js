@@ -1,7 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import { Text, View, StyleSheet, Dimensions, TouchableOpacity, Image } from "react-native";
+import DropDownPicker from 'react-native-dropdown-picker';
+import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 
 const AddTransactionScreen = () => {
+
+    const [selectedCategory, setSelectedCategory] = useState('Category');
+    const [openCategory, setOpenCategory] = useState(false);
+    const [selectedDescription, setSelectedDescription] = useState('Description');
+    const [openDescription, setOpenDescription] = useState(false);
+    const [selectedDate, setSelectedDate] = useState('Pick your date');
+    const [isCalendarVisible, setIsCalendarVisible] = useState(false);
+
+    const categories = [
+        { label: 'Salary', value: 'Salary' },
+        { label: 'Income', value: 'Income' },
+        { label: 'Food', value: 'Food' },
+        { label: 'Grocery', value: 'Grocery' },
+        { label: 'Subscription', value: 'Subscription' },
+        { label: 'Shopping', value: 'Shopping' },
+    ];
+    const descriptions = [
+        { label: 'Salary', value: 'Salary' },
+        { label: 'Income', value: 'Income' },
+        { label: 'Food', value: 'Food' },
+        { label: 'Grocery', value: 'Grocery' },
+        { label: 'Subscription', value: 'Subscription' },
+        { label: 'Shopping', value: 'Shopping' },
+    ];
+
     return (
         <View style={styles.fullSreenBGContainer}>
             <View style={styles.amountContainer}>
@@ -9,18 +36,40 @@ const AddTransactionScreen = () => {
                 <Text style={{ fontSize: 40, fontWeight: '600', paddingHorizontal: 40, marginTop: 10 }}>₹ 66580</Text>
             </View>
             <View style={styles.flexContainer}>
-                <View style={styles.flexColumns}>
+                <DropDownPicker
+                    open={openCategory}
+                    value={selectedCategory}
+                    items={categories}
+                    setOpen={setOpenCategory}
+                    setValue={setSelectedCategory}
+                    containerStyle={styles.flexColumns}
+                    style={styles.flexColumnsPicker}
+                    dropDownContainerStyle={styles.dropDownListContainer}
+                    placeholder="Category"
+                />
+                {/* <View style={styles.flexColumns}>
                     <Text style={{ fontSize: 16, color: '#91919F' }}>Category</Text>
                     <TouchableOpacity>
                         <Image source={require('../assets/icons/down-arrow.png')} style={styles.dropDownArrowImage}></Image>
                     </TouchableOpacity>
-                </View>
-                <View style={styles.flexColumns}>
+                </View> */}
+                {/* <View style={styles.flexColumns}>
                     <Text style={{ fontSize: 16, color: '#91919F' }}>Description</Text>
                     <TouchableOpacity>
                         <Image source={require('../assets/icons/down-arrow.png')} style={styles.dropDownArrowImage}></Image>
                     </TouchableOpacity>
-                </View>
+                </View> */}
+                <DropDownPicker
+                    open={openDescription}
+                    value={selectedDescription}
+                    items={descriptions}
+                    setOpen={setOpenDescription}
+                    setValue={setSelectedDescription}
+                    containerStyle={styles.flexColumns}
+                    style={styles.flexColumnsPicker}
+                    dropDownContainerStyle={styles.dropDownListContainer}
+                    placeholder="Description"
+                />
                 <View style={styles.flexColumnsWithButton}>
                     <TouchableOpacity style={{ backgroundColor: '#00A86B', borderRadius: 14, width: 80 }}>
                         <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#FFFFFF', padding: 5, alignSelf: 'center' }}>Income</Text>
@@ -29,15 +78,25 @@ const AddTransactionScreen = () => {
                         <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#FFFFFF', padding: 5, alignSelf: 'center' }}>Expense</Text>
                     </TouchableOpacity>
                 </View>
-                <View style={styles.flexColumns}>
-                    <Text style={{ fontSize: 16, color: '#91919F' }}>Pick you date</Text>
-                    <TouchableOpacity>
-                        <Image source={require('../assets/icons/down-arrow.png')} style={styles.dropDownArrowImage}></Image>
-                    </TouchableOpacity>
-                </View>
+                <TouchableOpacity style={styles.dateContainer}  onPress={() => setIsCalendarVisible(!isCalendarVisible)}>
+                {selectedDate == null ? (
+                                <Text style={{ fontSize: 16, color: '#91919F' }}>Pick Your Date</Text>
+                            ) : (
+                                <Text style={{ fontSize: 16, color: '#91919F' }}>{selectedDate}</Text>
+                            )}
+                </TouchableOpacity>
+                {isCalendarVisible && (
+                        <Calendar
+                            onDayPress={day => {
+                                setIsCalendarVisible(false);
+                                setSelectedDate(day.dateString)
+                            }}
+                            style={{ marginHorizontal: 20,}}
+                        />
+                    )}
             </View>
             <TouchableOpacity style={styles.continueButton}>
-                <Text style={{ fontSize: 18, fontWeight:'600', color: '#FCFCFC', alignSelf: 'center' }}>Continue</Text>
+                <Text style={{ fontSize: 18, fontWeight: '600', color: '#FCFCFC', alignSelf: 'center' }}>Continue</Text>
             </TouchableOpacity>
         </View>
     );
@@ -60,7 +119,7 @@ const styles = StyleSheet.create({
         marginTop: 50,
         marginLeft: 20,
         marginRight: 20,
-      // marginBottom: 50,
+        // marginBottom: 50,
         borderRadius: 50,
         backgroundColor: 'white',
         //rowGap: 8,
@@ -68,16 +127,21 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly'
     },
     flexColumns: {
-        flex: 1,
-        flexDirection: 'row',
-        borderWidth: 1,
+        width: '90%',
         borderColor: '#262653',
         borderRadius: 16,
         marginHorizontal: 20,
         marginVertical: 10,
-        paddingHorizontal: 10,
-        justifyContent: 'space-between',
-        alignItems: 'center',
+    },
+    flexColumnsPicker: {
+        borderColor: 'black',
+        borderRadius: 16
+    },
+    dropDownListContainer: {
+        borderRadius: 16,
+        borderWidth: 1,
+        borderColor: 'black',
+        backgroundColor: 'rgba(255, 255, 255, 1)',
     },
     flexColumnsWithButton: {
         flex: 1,
@@ -88,6 +152,18 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         columnGap: 12
+    },
+    dateContainer: {
+        width: '90%',
+        height: 50,
+        borderWidth: 1,
+        flexDirection: 'row',
+        borderColor: '#262653',
+        borderRadius: 16,
+        marginHorizontal: 20,
+        marginVertical: 10,
+        paddingHorizontal: 10,
+        alignItems: 'center',
     },
     dropDownArrowImage: {
         height: '20%',

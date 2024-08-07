@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { Text, StyleSheet, Dimensions, View, TouchableOpacity, Image, FlatList } from "react-native";
+import DropDownPicker from 'react-native-dropdown-picker';
 
 const TransactionsScreen = () => {
+
+    const [selectedMonth, setSelectedMonth] = useState('Month');
+    const [selectedFilter, setSelectedFilter] = useState('All');
+    const [openMonth, setOpenMonth] = useState(false);
+    const [openFilter, setOpenFilter] = useState(false);
 
     const listData = [
         {
@@ -53,7 +59,28 @@ const TransactionsScreen = () => {
             amount: '- 4700',
             time: '11:20 AM'
         },
-    ]
+    ];
+
+    const months = [
+        { label: 'January', value: 'January' },
+        { label: 'February', value: 'February' },
+        { label: 'March', value: 'March' },
+        { label: 'April', value: 'April' },
+        { label: 'May', value: 'May' },
+        { label: 'June', value: 'June' },
+        { label: 'July', value: 'July' },
+        { label: 'August', value: 'August' },
+        { label: 'September', value: 'September' },
+        { label: 'October', value: 'October' },
+        { label: 'November', value: 'November' },
+        { label: 'December', value: 'December' },
+    ];
+
+    const filters = [
+        { label: 'All', value: 'All' },
+        { label: 'Income', value: 'Income' },
+        { label: 'Expense', value: 'Expense' },
+    ];
 
     const flatListItem = (listData) => {
         return (
@@ -73,14 +100,28 @@ const TransactionsScreen = () => {
     return (
         <View style={styles.fullScreenContainer}>
             <View style={styles.dropDownViewContainer}>
-                <TouchableOpacity style={styles.dropDownOptionContainer}>
-                    <Image source={require('../assets/icons/down-arrow.png')} style={styles.dropDownArrowImage} />
-                    <Text>Month</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.dropDownOptionContainer}>
-                    <Image source={require('../assets/icons/down-arrow.png')} style={styles.dropDownArrowImage} />
-                    <Text>All</Text>
-                </TouchableOpacity>
+                <DropDownPicker
+                    open={openMonth}
+                    value={selectedMonth}
+                    items={months}
+                    setOpen={setOpenMonth}
+                    setValue={setSelectedMonth}
+                    containerStyle={styles.dropDownOptionContainer}
+                    style={styles.dropDownPicker}
+                    dropDownContainerStyle={styles.dropDownListContainer}
+                    placeholder="Month"
+                />
+                <DropDownPicker
+                    open={openFilter}
+                    value={selectedFilter}
+                    items={filters}
+                    setOpen={setOpenFilter}
+                    setValue={setSelectedFilter}
+                    containerStyle={styles.dropDownOptionContainer}
+                    style={styles.dropDownPicker}
+                    dropDownContainerStyle={styles.dropDownListContainer}
+                    placeholder="All"
+                />
             </View>
             <View style={styles.listViewContainer}>
                 <FlatList
@@ -107,23 +148,24 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        columnGap: 12
+        columnGap: 12,
+        zIndex: 1000,
     },
     dropDownOptionContainer: {
-        height: 40,
-        width: 96,
+        width: 120,
         borderRadius: 40,
+        borderColor: 'black'
+    },
+    dropDownPicker: {
+        backgroundColor: '#FFF6E5',
+        borderColor: 'black',
+        borderRadius: 40
+      },
+    dropDownListContainer: {
+        borderRadius: 20,
         borderWidth: 1,
         borderColor: 'black',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    dropDownArrowImage: {
-        height: '15%',
-        width: '15%',
-        resizeMode: 'stretch',
-        marginRight: 10
+        backgroundColor: 'rgba(255, 255, 255, 1)',
     },
     listViewContainer: {
         height: Dimensions.get('window').height,
@@ -150,4 +192,3 @@ const styles = StyleSheet.create({
 });
 
 export default TransactionsScreen;
-//#FFF6E5
