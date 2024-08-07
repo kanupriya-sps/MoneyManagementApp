@@ -34,6 +34,9 @@ function TabNavigator() {
             <Tab.Screen name="TransactionsScreen" component={TransactionsScreen}
                 options={{
                     title: 'Transaction',
+                    headerStyle: {
+                        backgroundColor: '#FFF6E5',
+                    },
                     tabBarIcon: ({ focused }) => (
                         <Image
                             source={require('../assets/icons/transaction.png')}
@@ -44,6 +47,9 @@ function TabNavigator() {
             <Tab.Screen name="AddTransactionScreen" component={AddTransactionScreen}
                 options={{
                     tabBarLabel: '',
+                    headerStyle: {
+                        backgroundColor: '#FFF6E5',
+                    },
                     tabBarIcon: ({ focused }) => (
                         <View style={{height: 70, width: 70, borderRadius: 35, backgroundColor: '#A89696', justifyContent:'center' ,alignItems:'center'}}>
                             <View style={{ height: 50, width: 50, borderRadius: 25, backgroundColor: '#7F3DFF',justifyContent:'center', alignItems:'center'}}>
@@ -72,6 +78,9 @@ function TabNavigator() {
             <Tab.Screen name="ProfileScreen" component={ProfileScreen}
                 options={{
                     title: 'Profile',
+                    headerStyle: {
+                        backgroundColor: '#FFF6E5',
+                    },
                     tabBarIcon: ({ focused }) => (
                         <Image
                             source={require('../assets/icons/user.png')}

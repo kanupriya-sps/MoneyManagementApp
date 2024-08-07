@@ -1,13 +1,39 @@
 import React, { useState } from "react";
 import { Text, View, StyleSheet, Dimensions, TouchableOpacity, Image } from "react-native";
+import PieChart from 'react-native-pie-chart';
+import ProgressBarComponent from "../components/ProgressBarComponent";
 
 const StatiticsScreen = () => {
 
     const [activeButton, setActiveButton] = useState('Expense');
 
+    const data = [60, 25, 10, 10];
+    const colors = [ '#FCAC12','#7F3DFF', '#FD3C4A', '#00A86B'];
+    const totalAmount = 9400.0;
+
     const handlePress = (button) => {
         setActiveButton(button);
     };
+    const dataItems = [
+        {
+            id: 1,
+            category: 'Shopping',
+            amount: '- 5120',
+            color: '#FCAC12'
+        },
+        {
+            id: 2,
+            category: 'Subsription',
+            amount: '- 1280',
+            color: '#7F3DFF'
+        },
+        {
+            id: 3,
+            category: 'Food',
+            amount: '- 532',
+            color: '#FD3C4A'
+        },
+    ];
 
     return (
         <View style={styles.fullSreenBGContainer}>
@@ -16,7 +42,14 @@ const StatiticsScreen = () => {
                 <Text style={{ fontSize: 14, color: '#212325' }}>Month</Text>
             </TouchableOpacity>
             <View style={styles.pieContainer}>
-                <Text style={{ fontSize: 25, fontWeight: '700' }}>₹ 9400.0</Text>
+                <PieChart
+                    widthAndHeight={190}
+                    series={data}
+                    sliceColor={colors}
+                    coverRadius={0.7}
+                    coverFill={'#FFF6E5'}
+                />
+                <Text style={{ fontSize: 25, fontWeight: '700', position: 'absolute' }}>₹ {totalAmount}</Text>
             </View>
             <View style={styles.segmentContainer}>
                 <TouchableOpacity
@@ -44,6 +77,9 @@ const StatiticsScreen = () => {
                         ]} >Income</Text>
                 </TouchableOpacity>
             </View>
+            <View style={{marginTop: 20}}>
+                    <ProgressBarComponent />
+                </View>
         </View>
     )
 };
@@ -77,11 +113,10 @@ const styles = StyleSheet.create({
         width: 190,
         borderRadius: 95,
         marginTop: 30,
-        borderWidth: 24,
-        borderColor: '#FCAC12',
         alignSelf: 'center',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        position: 'relative'
     },
     segmentContainer: {
         height: 60,
@@ -116,7 +151,17 @@ const styles = StyleSheet.create({
     },
     inactiveText: {
         color: 'black'
-    }
+    },
+    listItemViewContainer: {
+        height: 50,
+        marginHorizontal: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+    },
+    progressBar: {
+        marginHorizontal: 10,
+    },
 });
 
 export default StatiticsScreen;
