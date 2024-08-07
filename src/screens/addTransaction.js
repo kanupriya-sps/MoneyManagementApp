@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet, Dimensions, TouchableOpacity, Image } from "react-native";
+import { Text, View, StyleSheet, Dimensions, TouchableOpacity, Image, Modal } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 
@@ -78,22 +78,36 @@ const AddTransactionScreen = () => {
                         <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#FFFFFF', padding: 5, alignSelf: 'center' }}>Expense</Text>
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity style={styles.dateContainer}  onPress={() => setIsCalendarVisible(!isCalendarVisible)}>
-                {selectedDate == null ? (
-                                <Text style={{ fontSize: 16, color: '#91919F' }}>Pick Your Date</Text>
-                            ) : (
-                                <Text style={{ fontSize: 16, color: '#91919F' }}>{selectedDate}</Text>
-                            )}
+                <TouchableOpacity style={styles.dateContainer} onPress={() => setIsCalendarVisible(!isCalendarVisible)}>
+                    {selectedDate == null ? (
+                        <Text style={{ fontSize: 16, color: '#91919F' }}>Pick Your Date</Text>
+                    ) : (
+                        <Text style={{ fontSize: 16, color: '#91919F' }}>{selectedDate}</Text>
+                    )}
                 </TouchableOpacity>
                 {isCalendarVisible && (
-                        <Calendar
-                            onDayPress={day => {
-                                setIsCalendarVisible(false);
-                                setSelectedDate(day.dateString)
-                            }}
-                            style={{ marginHorizontal: 20,}}
-                        />
-                    )}
+                    <Modal
+                        transparent={true}
+                        animationType="slide"
+                        visible={isCalendarVisible}
+                        onRequestClose={() => setIsCalendarVisible(false)}
+                    >
+                        <View style={styles.modalContainer}>
+                            <View style={styles.calendarContainer}>
+                                <Calendar
+                                    onDayPress={day => {
+                                        setIsCalendarVisible(false);
+                                        setSelectedDate(day.dateString);
+                                    }}
+                                    style={styles.calendar}
+                                />
+                                <TouchableOpacity onPress={() => setIsCalendarVisible(false)} style={styles.closeButton}>
+                                    <Text style={{ color: 'white' }}>Close</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </Modal>
+                )}
             </View>
             <TouchableOpacity style={styles.continueButton}>
                 <Text style={{ fontSize: 18, fontWeight: '600', color: '#FCFCFC', alignSelf: 'center' }}>Continue</Text>
@@ -170,6 +184,27 @@ const styles = StyleSheet.create({
         width: '35%',
         resizeMode: 'stretch',
         marginRight: 50
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)'
+    },
+    calendarContainer: {
+        width: Dimensions.get('window').width - 40,
+        backgroundColor: 'white',
+        borderRadius: 10,
+        overflow: 'hidden'
+    },
+    calendar: {
+        borderRadius: 10
+    },
+    closeButton: {
+        backgroundColor: '#7F3DFF',
+        padding: 10,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     continueButton: {
         height: 50,
