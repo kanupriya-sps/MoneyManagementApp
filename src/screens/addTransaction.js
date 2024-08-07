@@ -46,19 +46,9 @@ const AddTransactionScreen = () => {
                     style={styles.flexColumnsPicker}
                     dropDownContainerStyle={styles.dropDownListContainer}
                     placeholder="Category"
+                    zIndex={3000}
+                    zIndexInverse={1000}
                 />
-                {/* <View style={styles.flexColumns}>
-                    <Text style={{ fontSize: 16, color: '#91919F' }}>Category</Text>
-                    <TouchableOpacity>
-                        <Image source={require('../assets/icons/down-arrow.png')} style={styles.dropDownArrowImage}></Image>
-                    </TouchableOpacity>
-                </View> */}
-                {/* <View style={styles.flexColumns}>
-                    <Text style={{ fontSize: 16, color: '#91919F' }}>Description</Text>
-                    <TouchableOpacity>
-                        <Image source={require('../assets/icons/down-arrow.png')} style={styles.dropDownArrowImage}></Image>
-                    </TouchableOpacity>
-                </View> */}
                 <DropDownPicker
                     open={openDescription}
                     value={selectedDescription}
@@ -69,6 +59,8 @@ const AddTransactionScreen = () => {
                     style={styles.flexColumnsPicker}
                     dropDownContainerStyle={styles.dropDownListContainer}
                     placeholder="Description"
+                    zIndex={2000}
+                    zIndexInverse={2000}
                 />
                 <View style={styles.flexColumnsWithButton}>
                     <TouchableOpacity style={{ backgroundColor: '#00A86B', borderRadius: 14, width: 80 }}>
@@ -127,16 +119,15 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width,
     },
     flexContainer: {
+        zIndex: 1,
         flex: 1,
         flexDirection: 'column',
         height: 400,
         marginTop: 50,
         marginLeft: 20,
         marginRight: 20,
-        // marginBottom: 50,
         borderRadius: 50,
         backgroundColor: 'white',
-        //rowGap: 8,
         paddingVertical: 10,
         justifyContent: 'space-evenly'
     },
@@ -178,12 +169,6 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         paddingHorizontal: 10,
         alignItems: 'center',
-    },
-    dropDownArrowImage: {
-        height: '20%',
-        width: '35%',
-        resizeMode: 'stretch',
-        marginRight: 50
     },
     modalContainer: {
         flex: 1,
