@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import { Text, View, StyleSheet, Dimensions, TouchableOpacity, Image } from "react-native";
 import PieChart from 'react-native-pie-chart';
 import ProgressBarComponent from "../components/ProgressBarComponent";
+import DropDownPicker from 'react-native-dropdown-picker';
 
 const StatiticsScreen = () => {
 
     const [activeButton, setActiveButton] = useState('Expense');
+    const [selectedMonth, setSelectedMonth] = useState('Month');
+    const [openMonth, setOpenMonth] = useState(false);
 
     const data = [60, 25, 10, 10];
     const colors = [ '#FCAC12','#7F3DFF', '#FD3C4A', '#00A86B'];
@@ -34,13 +37,34 @@ const StatiticsScreen = () => {
             color: '#FD3C4A'
         },
     ];
+    const months = [
+        { label: 'January', value: 'January' },
+        { label: 'February', value: 'February' },
+        { label: 'March', value: 'March' },
+        { label: 'April', value: 'April' },
+        { label: 'May', value: 'May' },
+        { label: 'June', value: 'June' },
+        { label: 'July', value: 'July' },
+        { label: 'August', value: 'August' },
+        { label: 'September', value: 'September' },
+        { label: 'October', value: 'October' },
+        { label: 'November', value: 'November' },
+        { label: 'December', value: 'December' },
+    ];
 
     return (
         <View style={styles.fullSreenBGContainer}>
-            <TouchableOpacity style={styles.monthContainer}>
-                <Image source={require('../assets/icons/down-arrow.png')} style={styles.dropDownArrowImage} ></Image>
-                <Text style={{ fontSize: 14, color: '#212325' }}>Month</Text>
-            </TouchableOpacity>
+            <DropDownPicker
+                    open={openMonth}
+                    value={selectedMonth}
+                    items={months}
+                    setOpen={setOpenMonth}
+                    setValue={setSelectedMonth}
+                    containerStyle={styles.dropDownOptionContainer}
+                    style={styles.dropDownPicker}
+                    dropDownContainerStyle={styles.dropDownListContainer}
+                    placeholder="Month"
+                />
             <View style={styles.pieContainer}>
                 <PieChart
                     widthAndHeight={190}
@@ -90,23 +114,25 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width,
         backgroundColor: '#FFF6E5'
     },
-    monthContainer: {
+    dropDownOptionContainer: {
         height: 40,
-        width: 96,
+        width: 150,
         borderRadius: 40,
         borderWidth: 1,
         borderColor: '#F1F1FA',
-        marginTop: 60,
+        marginTop: 45,
         alignSelf: 'center',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center'
     },
-    dropDownArrowImage: {
-        height: '15%',
-        width: '15%',
-        resizeMode: 'stretch',
-        marginRight: 10
+    dropDownPicker: {
+        backgroundColor: '#FFF6E5',
+        borderColor: '#F1F1FA',
+        borderRadius: 40
+      },
+    dropDownListContainer: {
+        borderRadius: 20,
+        borderWidth: 1,
+        borderColor: '#F1F1FA',
+        backgroundColor: '#FFF6E5' //rgba(255, 255, 255, 1)',
     },
     pieContainer: {
         height: 190,
