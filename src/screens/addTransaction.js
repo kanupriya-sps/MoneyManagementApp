@@ -11,6 +11,7 @@ const AddTransactionScreen = () => {
     const [openDescription, setOpenDescription] = useState(false);
     const [selectedDate, setSelectedDate] = useState('Pick your date');
     const [isCalendarVisible, setIsCalendarVisible] = useState(false);
+    const [transactionType, setTransactionType] = useState(null);
 
     const categories = [
         { label: 'Salary', value: 'Salary' },
@@ -28,9 +29,19 @@ const AddTransactionScreen = () => {
         { label: 'Subscription', value: 'Subscription' },
         { label: 'Shopping', value: 'Shopping' },
     ];
+    const handleContinue = () => {
+        const transactionData = {
+            category: selectedCategory,
+            description: selectedDescription,
+            date: selectedDate,
+            type: transactionType,
+        };
+        console.log("transactionData" ,transactionData); // You can store this object or send it to a backend service
+    };
 
     return (
         <View style={styles.fullSreenBGContainer}>
+            {/* need to make this text input */}
             <View style={styles.amountContainer}>
                 <Text style={{ fontSize: 18, paddingHorizontal: 40, marginTop: 70 }}>How much?</Text>
                 <Text style={{ fontSize: 40, fontWeight: '600', paddingHorizontal: 40, marginTop: 10 }}>₹ 66580</Text>
@@ -63,10 +74,12 @@ const AddTransactionScreen = () => {
                     zIndexInverse={2000}
                 />
                 <View style={styles.flexColumnsWithButton}>
-                    <TouchableOpacity style={{ backgroundColor: '#00A86B', borderRadius: 14, width: 80 }}>
+                    <TouchableOpacity style={{ backgroundColor: '#00A86B', borderRadius: 14, width: 80 }}
+                        onPress={() => setTransactionType('Income')}>
                         <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#FFFFFF', padding: 5, alignSelf: 'center' }}>Income</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{ backgroundColor: '#FD3C4A', borderRadius: 14, width: 80 }}>
+                    <TouchableOpacity style={{ backgroundColor: '#FD3C4A', borderRadius: 14, width: 80 }}
+                        onPress={() => setTransactionType('Expense')}>
                         <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#FFFFFF', padding: 5, alignSelf: 'center' }}>Expense</Text>
                     </TouchableOpacity>
                 </View>
@@ -101,7 +114,7 @@ const AddTransactionScreen = () => {
                     </Modal>
                 )}
             </View>
-            <TouchableOpacity style={styles.continueButton}>
+            <TouchableOpacity style={styles.continueButton} onPress={handleContinue}>
                 <Text style={{ fontSize: 18, fontWeight: '600', color: '#FCFCFC', alignSelf: 'center' }}>Continue</Text>
             </TouchableOpacity>
         </View>

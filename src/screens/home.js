@@ -74,6 +74,7 @@ const HomeScreen = ({ navigation }) => {
                     <Text style={{ fontSize: 14, fontFamily: 'Inter' }}>View All</Text>
                 </TouchableOpacity>
             </View>
+            {/* need to change this to 1 component and use multiple times */}
             <View style={styles.transactionsContainer}>
                 <View style={styles.singleTransactionContainer}>
                     <View style={{ flex: 1.2, height: 40, width: 40, borderRadius: 20, backgroundColor: '#FFF6E5', justifyContent: 'center', alignItems: 'center', marginLeft: 10 }}>
