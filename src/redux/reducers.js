@@ -1,5 +1,5 @@
 // reducers.js
-import { ADD_TRANSACTION } from './actions';
+import { ADD_TRANSACTION , SET_SELECTED_MONTH, SET_SELECTED_FILTER} from './actions';
 
 const initialState = {
     transactions: [
@@ -67,6 +67,8 @@ const initialState = {
             time: '11:20 AM'
         },
     ],
+    selectedMonth: 'Month',
+    selectedFilter: 'All',
 };
 
 let nextId = initialState.transactions.length + 1;
@@ -80,6 +82,16 @@ const transactionReducer = (state = initialState, action) => {
                     ...state.transactions,
                     { ...action.payload, id: nextId++ },
                 ],
+            };
+        case SET_SELECTED_MONTH:
+            return {
+                ...state,
+                selectedMonth: action.payload,
+            };
+        case SET_SELECTED_FILTER:
+            return {
+                ...state,
+                selectedFilter: action.payload,
             };
         default:
             return state;

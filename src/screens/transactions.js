@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Text, StyleSheet, Dimensions, View, TouchableOpacity, Image, FlatList } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
+import { setSelectedMonth, setSelectedFilter } from "../redux/actions";
 
 const TransactionsScreen = () => {
 
-    const transactions = useSelector(state => state.transactions);
+    const dispatch = useDispatch();
+    const { transactions, selectedMonth, selectedFilter } = useSelector(state => state);
+    console.log('Before dispatching: ', { selectedMonth, selectedFilter });
 
-    const [selectedMonth, setSelectedMonth] = useState('Month');
-    const [selectedFilter, setSelectedFilter] = useState('All');
     const [openMonth, setOpenMonth] = useState(false);
     const [openFilter, setOpenFilter] = useState(false);
 
@@ -99,7 +100,14 @@ const TransactionsScreen = () => {
         { label: 'Expense', value: 'Expense' },
     ];
 
+    const filteredData = transactions.filter(item => {
+        const monthMatch = selectedMonth === 'Month' || item.month === selectedMonth;
+        const filterMatch = selectedFilter === 'All' || item.type === selectedFilter;
+        return monthMatch && filterMatch;
+    });
+
     const flatListItem = ({ item }) => {
+        console.log('Rendering item:', item);
         return (
             <View style={styles.listItemViewContainer}>
                 <View style={styles.listItemDetailContainer}>
@@ -122,7 +130,10 @@ const TransactionsScreen = () => {
                     value={selectedMonth}
                     items={months}
                     setOpen={setOpenMonth}
-                    setValue={setSelectedMonth}
+                    setValue={(callback) => {
+                        const value = callback(selectedMonth); // Using the callback to get the new value
+                        dispatch(setSelectedMonth(value));
+                    }}
                     containerStyle={styles.dropDownOptionContainer}
                     style={styles.dropDownPicker}
                     dropDownContainerStyle={styles.dropDownListContainer}
@@ -133,7 +144,10 @@ const TransactionsScreen = () => {
                     value={selectedFilter}
                     items={filters}
                     setOpen={setOpenFilter}
-                    setValue={setSelectedFilter}
+                    setValue={(callback) => {
+                        const value = callback(selectedFilter); // Using the callback to get the new value
+                        dispatch(setSelectedFilter(value));
+                    }}
                     containerStyle={styles.dropDownOptionContainer}
                     style={styles.dropDownPicker}
                     dropDownContainerStyle={styles.dropDownListContainer}
@@ -142,9 +156,9 @@ const TransactionsScreen = () => {
             </View>
             <View style={styles.listViewContainer}>
                 <FlatList
-                    data={transactions}
+                    data={filteredData}
                     renderItem={flatListItem}
-                    keyExtractor={item => item.id}
+                    keyExtractor={item => item.id.toString()}
                 />
             </View>
         </View>
@@ -177,7 +191,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFF6E5',
         borderColor: 'black',
         borderRadius: 40
-      },
+    },
     dropDownListContainer: {
         borderRadius: 20,
         borderWidth: 1,
