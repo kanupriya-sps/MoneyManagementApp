@@ -1,9 +1,15 @@
 import React, { useState } from "react";
+import { useDispatch } from 'react-redux';
 import { Text, View, StyleSheet, Dimensions, TouchableOpacity, Image, Modal } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
+import { addTransaction } from "../redux/actions";
+import { useNavigation } from "@react-navigation/native";
 
 const AddTransactionScreen = () => {
+
+    const dispatch = useDispatch();
+    const navigation = useNavigation();
 
     const [selectedCategory, setSelectedCategory] = useState('Category');
     const [openCategory, setOpenCategory] = useState(false);
@@ -38,7 +44,28 @@ const AddTransactionScreen = () => {
         };
         console.log("transactionData" ,transactionData); // You can store this object or send it to a backend service
     };
+    const handleSubmit = () => {
+        const transaction = {
+            id: new Date().getTime(), // Generate a unique ID
+            category: selectedCategory,
+            description: selectedDescription,
+            type: transactionType,
+            amount: transactionType === 'Income' ? '+ 5000' : '- 5000', // Example amount, replace with your input
+            month: new Date(selectedDate).toLocaleString('default', { month: 'long' }),
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })
+        };
 
+        dispatch(addTransaction(transaction));
+
+        // Reset form
+        setSelectedCategory(null);
+        setSelectedDescription(null);
+        setSelectedDate(null);
+        setTransactionType(null);
+
+        // Navigate to Transactions screen
+        navigation.navigate('TransactionsScreen');
+    };
     return (
         <View style={styles.fullSreenBGContainer}>
             {/* need to make this text input */}
@@ -114,7 +141,7 @@ const AddTransactionScreen = () => {
                     </Modal>
                 )}
             </View>
-            <TouchableOpacity style={styles.continueButton} onPress={handleContinue}>
+            <TouchableOpacity style={styles.continueButton} onPress={handleSubmit}>
                 <Text style={{ fontSize: 18, fontWeight: '600', color: '#FCFCFC', alignSelf: 'center' }}>Continue</Text>
             </TouchableOpacity>
         </View>

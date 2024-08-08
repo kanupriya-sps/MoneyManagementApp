@@ -1,79 +1,82 @@
 import React, { useState } from "react";
+import { useSelector } from 'react-redux';
 import { Text, StyleSheet, Dimensions, View, TouchableOpacity, Image, FlatList } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
 
 const TransactionsScreen = () => {
+
+    const transactions = useSelector(state => state.transactions);
 
     const [selectedMonth, setSelectedMonth] = useState('Month');
     const [selectedFilter, setSelectedFilter] = useState('All');
     const [openMonth, setOpenMonth] = useState(false);
     const [openFilter, setOpenFilter] = useState(false);
 
-    const listData = [
-        {
-            id: 1,
-            category: 'Shopping',
-            description: 'Buy some grocery',
-            type: 'Expense',
-            amount: '- 5120',
-            month: 'November',
-            time: '10:00 AM'
-        },
-        {
-            id: 2,
-            category: 'Food',
-            description: 'Arabian Hut',
-            type: 'Expense',
-            amount: '- 532',
-            month: 'May',
-            time: '07:30 PM'
-        },
-        {
-            id: 3,
-            category: 'Salary',
-            description: 'Salary for august',
-            type: 'Income',
-            amount: '+ 5000',
-            month: 'July',
-            time: '03:30 PM'
-        },
-        {
-            id: 4,
-            category: 'Subsription',
-            description: 'Disney + Annual',
-            type: 'Expense',
-            amount: '- 1180',
-            month: 'September',
-            time: '10:00 PM'
-        },
-        {
-            id: 5,
-            category: 'Fuel',
-            description: 'kozhikode',
-            type: 'Expense',
-            amount: '- 1000',
-            month: 'May',
-            time: '07:30 PM'
-        },
-        {
-            id: 6,
-            category: 'Cinema',
-            description: 'lulu mall',
-            type: 'Expense',
-            amount: '- 507',
-            month: 'October',
-            time: '02:45 PM'
-        },
-        {
-            id: 7,
-            category: 'Loan',
-            description: 'Car loan',
-            type: 'Expense',
-            amount: '- 4700',
-            month: 'January',
-            time: '11:20 AM'
-        },
-    ];
+    // const listData = [
+    //     {
+    //         id: 1,
+    //         category: 'Shopping',
+    //         description: 'Buy some grocery',
+    //         type: 'Expense',
+    //         amount: '- 5120',
+    //         month: 'November',
+    //         time: '10:00 AM'
+    //     },
+    //     {
+    //         id: 2,
+    //         category: 'Food',
+    //         description: 'Arabian Hut',
+    //         type: 'Expense',
+    //         amount: '- 532',
+    //         month: 'May',
+    //         time: '07:30 PM'
+    //     },
+    //     {
+    //         id: 3,
+    //         category: 'Salary',
+    //         description: 'Salary for august',
+    //         type: 'Income',
+    //         amount: '+ 5000',
+    //         month: 'July',
+    //         time: '03:30 PM'
+    //     },
+    //     {
+    //         id: 4,
+    //         category: 'Subsription',
+    //         description: 'Disney + Annual',
+    //         type: 'Expense',
+    //         amount: '- 1180',
+    //         month: 'September',
+    //         time: '10:00 PM'
+    //     },
+    //     {
+    //         id: 5,
+    //         category: 'Fuel',
+    //         description: 'kozhikode',
+    //         type: 'Expense',
+    //         amount: '- 1000',
+    //         month: 'May',
+    //         time: '07:30 PM'
+    //     },
+    //     {
+    //         id: 6,
+    //         category: 'Cinema',
+    //         description: 'lulu mall',
+    //         type: 'Expense',
+    //         amount: '- 507',
+    //         month: 'October',
+    //         time: '02:45 PM'
+    //     },
+    //     {
+    //         id: 7,
+    //         category: 'Loan',
+    //         description: 'Car loan',
+    //         type: 'Expense',
+    //         amount: '- 4700',
+    //         month: 'January',
+    //         time: '11:20 AM'
+    //     },
+    // ];
 
     const months = [
         { label: 'January', value: 'January' },
@@ -96,16 +99,16 @@ const TransactionsScreen = () => {
         { label: 'Expense', value: 'Expense' },
     ];
 
-    const flatListItem = (listData) => {
+    const flatListItem = ({ item }) => {
         return (
             <View style={styles.listItemViewContainer}>
                 <View style={styles.listItemDetailContainer}>
-                    <Text style={{ fontSize: 16, color: 'black' }}>{listData?.item?.category}</Text>
-                    <Text style={{ fontSize: 16, color: '#FD3C4A' }}>{listData?.item?.amount}</Text>
+                    <Text style={{ fontSize: 16, color: 'black' }}>{item.category}</Text>
+                    <Text style={{ fontSize: 16, color: '#FD3C4A' }}>{item.amount}</Text>
                 </View>
                 <View style={styles.listItemDetailContainer}>
-                    <Text style={{ fontSize: 13, color: '#91919F' }}>{listData?.item?.description}</Text>
-                    <Text style={{ fontSize: 13, color: '#91919F' }}>{listData?.item?.time}</Text>
+                    <Text style={{ fontSize: 13, color: '#91919F' }}>{item.description}</Text>
+                    <Text style={{ fontSize: 13, color: '#91919F' }}>{item.time}</Text>
                 </View>
             </View>
         )
@@ -139,7 +142,7 @@ const TransactionsScreen = () => {
             </View>
             <View style={styles.listViewContainer}>
                 <FlatList
-                    data={listData}
+                    data={transactions}
                     renderItem={flatListItem}
                     keyExtractor={item => item.id}
                 />
