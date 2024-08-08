@@ -47,6 +47,7 @@ function TabNavigator() {
             <Tab.Screen name="AddTransactionScreen" component={AddTransactionScreen}
                 options={{
                     tabBarLabel: '',
+                    title: 'Add Transaction',
                     headerStyle: {
                         backgroundColor: '#FFF6E5',
                     },
