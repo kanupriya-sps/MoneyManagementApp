@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet, Dimensions, TouchableOpacity, Image, Modal } from "react-native";
+import { Text, View, StyleSheet, Dimensions, TouchableOpacity, Modal, TextInput , Keyboard} from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
-import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
+import { Calendar } from 'react-native-calendars';
 
 const AddTransactionScreen = () => {
 
@@ -12,6 +12,8 @@ const AddTransactionScreen = () => {
     const [selectedDate, setSelectedDate] = useState('Pick your date');
     const [isCalendarVisible, setIsCalendarVisible] = useState(false);
     const [transactionType, setTransactionType] = useState(null);
+    const [amount, setAmount] = useState('');
+    const [isFocused, setIsFocused] = useState(false);
 
     const categories = [
         { label: 'Salary', value: 'Salary' },
@@ -44,7 +46,20 @@ const AddTransactionScreen = () => {
             {/* need to make this text input */}
             <View style={styles.amountContainer}>
                 <Text style={{ fontSize: 18, paddingHorizontal: 40, marginTop: 70 }}>How much?</Text>
-                <Text style={{ fontSize: 40, fontWeight: '600', paddingHorizontal: 40, marginTop: 10 }}>₹ 66580</Text>
+                {!isFocused && !amount && (
+                    <Text style={styles.placeholderText}>Enter amount</Text>
+                )}
+                <TextInput
+                    style={styles.amountInput}
+                    //placeholder="Enter amount"
+                    value={amount}
+                    onChangeText={setAmount}
+                    keyboardType="numeric"
+                    returnKeyType="done" 
+                    onSubmitEditing={Keyboard.dismiss} 
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={() => setIsFocused(false)}
+                />
             </View>
             <View style={styles.flexContainer}>
                 <DropDownPicker
@@ -130,6 +145,20 @@ const styles = StyleSheet.create({
     amountContainer: {
         height: 150,
         width: Dimensions.get('window').width,
+    },
+    placeholderText: {
+        fontSize: 14,  // Smaller size for placeholder
+        color: '#91919F',
+        position: 'absolute',
+        paddingHorizontal: 40,
+        marginTop: 110,
+    },
+    amountInput: {
+        fontSize: 40,
+        fontWeight: '600',
+        paddingHorizontal: 40,
+        marginTop: 10,
+        color: 'black',
     },
     flexContainer: {
         zIndex: 1,
