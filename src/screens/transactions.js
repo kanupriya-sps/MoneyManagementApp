@@ -202,6 +202,7 @@ const styles = StyleSheet.create({
         height: Dimensions.get('window').height,
         width: Dimensions.get('window').width,
         marginTop: 20,
+        marginBottom: 80,
         paddingHorizontal: 8
     },
     listItemViewContainer: {

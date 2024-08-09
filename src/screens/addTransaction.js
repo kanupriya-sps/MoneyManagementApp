@@ -38,22 +38,14 @@ const AddTransactionScreen = () => {
         { label: 'Subscription', value: 'Subscription' },
         { label: 'Shopping', value: 'Shopping' },
     ];
-    const handleContinue = () => {
-        const transactionData = {
-            category: selectedCategory,
-            description: selectedDescription,
-            date: selectedDate,
-            type: transactionType,
-        };
-        console.log("transactionData" ,transactionData); // You can store this object or send it to a backend service
-    };
+    
     const handleSubmit = () => {
         const transaction = {
             id: new Date().getTime(), // Generate a unique ID
             category: selectedCategory,
             description: selectedDescription,
             type: transactionType,
-            amount: transactionType === 'Income' ? '+ 5000' : '- 5000', // Example amount, replace with your input
+            amount: transactionType === 'Income' ? `+ ${amount}` : `- ${amount}`, // Example amount, replace with your input
             month: new Date(selectedDate).toLocaleString('default', { month: 'long' }),
             time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })
         };
@@ -65,6 +57,7 @@ const AddTransactionScreen = () => {
         setSelectedDescription(null);
         setSelectedDate(null);
         setTransactionType(null);
+        setAmount(null);
 
         // Navigate to Transactions screen
         navigation.navigate('TransactionsScreen');
