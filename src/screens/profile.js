@@ -1,7 +1,27 @@
-import React from "react";
-import { StyleSheet, Text, View, Dimensions, Image, TouchableOpacity } from "react-native";
+import React, { useState, useRef, useEffect } from "react";
+import { StyleSheet, Text, View, Dimensions, Image, TouchableOpacity, TextInput, Keyboard } from "react-native";
 
 const ProfileScreen = () => {
+
+    const [username, setUsername] = useState("Kanupriya");
+    const [isEditing, setIsEditing] = useState(false);
+    const inputRef = useRef(null);
+
+    useEffect(() => {
+        if (isEditing) {
+            inputRef.current.focus(); // Focus the TextInput when editing mode is enabled
+        }
+    }, [isEditing]);
+
+    const handleEditPress = () => {
+        setIsEditing(true);
+    };
+
+    const handleDonePress = () => {
+        Keyboard.dismiss;
+        setIsEditing(false);
+    };
+
     return (
         <View style={styles.fullSreenBGContainer}>
             <View style={styles.userNameContainer}>
@@ -14,10 +34,20 @@ const ProfileScreen = () => {
                 </View>
                 <View style={{ flex: 1.5, flexDirection: 'column', alignItems: 'center' }}>
                     <Text style={{ fontSize: 14, color: '#91919F' }}>Username</Text>
-                    <Text style={{ fontSize: 24, color: '#161719' }}>Kanupriya</Text>
+                    <TextInput
+                        ref={inputRef}
+                        style={[styles.nameInput, { borderBottomWidth: isEditing ? 1 : 0 }]}
+                        value={username}
+                        onChangeText={setUsername}
+                        editable={isEditing}
+                        //autoFocus={isEditing}
+                        keyboardType='default'
+                        returnKeyType="done"
+                        onSubmitEditing={handleDonePress}
+                    />
                 </View>
                 <View>
-                    <TouchableOpacity style={{ flex: 1, alignItems: 'center', padding: 20 }}>
+                    <TouchableOpacity style={{ flex: 1, alignItems: 'center', padding: 20 }} onPress={handleEditPress}>
                         <Image source={require('../assets/icons/edit.png')} ></Image>
                     </TouchableOpacity>
                 </View>
@@ -85,6 +115,13 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         resizeMode: 'cover'
+    },
+    nameInput: {
+        fontSize: 24,
+        color: '#161719',
+        textAlign: 'center',
+
+        borderBottomColor: '#AD00FF',
     },
     flexContainer: {
         flex: 1,

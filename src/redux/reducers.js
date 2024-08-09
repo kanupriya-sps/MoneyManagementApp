@@ -66,6 +66,15 @@ const initialState = {
             month: 'January',
             time: '11:20 AM'
         },
+        {
+            id: 8,
+            category: 'Food',
+            description: 'Food loan',
+            type: 'Income',
+            amount: '+ 400',
+            month: 'January',
+            time: '11:20 AM'
+        },
     ],
     selectedMonth: 'Month',
     selectedFilter: 'All',

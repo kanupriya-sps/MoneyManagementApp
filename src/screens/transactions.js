@@ -162,7 +162,6 @@ const TransactionsScreen = () => {
                 />
             </View>
         </View>
-
     )
 };
 
