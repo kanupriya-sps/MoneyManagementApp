@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, Dimensions, TouchableOpacity, Image } from "react-native";
 import PieChart from 'react-native-pie-chart';
 import ProgressBarComponent from "../components/ProgressBarComponent";
 import DropDownPicker from 'react-native-dropdown-picker';
+import { useSelector } from 'react-redux';
 
 const StatiticsScreen = () => {
 
@@ -10,12 +11,38 @@ const StatiticsScreen = () => {
     const [selectedMonth, setSelectedMonth] = useState('Month');
     const [openMonth, setOpenMonth] = useState(false);
 
+    const [filteredTransactions, setFilteredTransactions] = useState([]);
+    const transactions = useSelector(state => state.transactions);
+
     const data = [60, 25, 10, 10];
     const colors = [ '#FCAC12','#7F3DFF', '#FD3C4A', '#00A86B'];
     const totalAmount = 9400.0;
 
+    useEffect(() => {
+        filterTransactions('Expense'); // Default to Expense
+    }, []);
+
     const handlePress = (button) => {
         setActiveButton(button);
+        filterTransactions(button);
+    };
+    const filterTransactions = (type) => {
+        const filtered = transactions
+            .filter(transaction => transaction.type === type)
+            .map(transaction => ({
+                ...transaction,
+                color: getRandomColor(),
+            }));
+        setFilteredTransactions(filtered);
+    };
+
+    const getRandomColor = () => {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
     };
     const dataItems = [
         {
@@ -76,7 +103,7 @@ const StatiticsScreen = () => {
                 <Text style={{ fontSize: 25, fontWeight: '700', position: 'absolute' }}>₹ {totalAmount}</Text>
             </View>
             <View style={styles.segmentContainer}>
-                <TouchableOpacity
+            <TouchableOpacity
                     style={[
                         styles.segmentButtons,
                         activeButton === 'Expense' ? styles.activeButton : styles.inactiveButton
@@ -100,9 +127,33 @@ const StatiticsScreen = () => {
                             activeButton === 'Income' ? styles.activeText : styles.inactiveText
                         ]} >Income</Text>
                 </TouchableOpacity>
+                {/* <TouchableOpacity
+                    style={[
+                        styles.segmentButtons,
+                        activeButton === 'Expense' ? styles.activeButton : styles.inactiveButton
+                    ]}
+                    onPress={() => handlePress('Expense')}>
+                    <Text
+                        style={[
+                            styles.segmentText,
+                            activeButton === 'Expense' ? styles.activeText : styles.inactiveText
+                        ]} >Expense</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={[
+                        styles.segmentButtons,
+                        activeButton === 'Income' ? styles.activeButton : styles.inactiveButton
+                    ]}
+                    onPress={() => handlePress('Income')}>
+                    <Text
+                        style={[
+                            styles.segmentText,
+                            activeButton === 'Income' ? styles.activeText : styles.inactiveText
+                        ]} >Income</Text>
+                </TouchableOpacity> */}
             </View>
-            <View style={{marginTop: 20}}>
-                    <ProgressBarComponent />
+            <View style={{marginTop: 20, marginBottom: 50}}>
+            <ProgressBarComponent transactions={filteredTransactions} />
                 </View>
         </View>
     )

@@ -9,22 +9,22 @@ const categories = [
     { label: 'Grocery', value: 0.1, color: '#00A86B', amount: '412' }
 ];
 
-const ProgressBarComponent = () => {
+const ProgressBarComponent = ({ transactions }) => {
     return (
         <ScrollView style={styles.container}>
-            {categories.map((category, index) => (
+            {transactions.map((transaction, index) => (
                 <View key={index} style={styles.progressBarContainer}>
                     <View style={styles.detailsContainer}>
                         <View style={styles.labelContainer}>
-                            <View style={[styles.circle, { backgroundColor: category.color }]} />
-                            <Text style={styles.label}>{category.label}</Text>
+                            <View style={[styles.circle, { backgroundColor: transaction.color }]} />
+                            <Text style={styles.label}>{transaction.category}</Text>
                         </View>
-                        <Text style={styles.amount}>- {category.amount}</Text>
+                        <Text style={styles.amount}>{transaction.amount}</Text>
                     </View>
                     <Progress.Bar
-                        progress={category.value}
+                        progress={parseFloat(transaction.amount.replace(/[^\d.-]/g, '')) / 10000}
                         width={Dimensions.get('window').width - 40}
-                        color={category.color}
+                        color={transaction.color}
                         unfilledColor="#F1F1FA"
                         borderWidth={0}
                         height={12}
