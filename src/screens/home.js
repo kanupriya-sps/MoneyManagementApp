@@ -9,15 +9,31 @@ const HomeScreen = ({ navigation }) => {
     const onPressViewAll = () => {
         navigation.navigate('Transactions')
     }
-    const ListItem = ({ item }) => {
+    const FilterItem = ({ item }) => {
         const isSelected = item === selectedItem;
         return (
             <TouchableOpacity style={[styles.itemContainer, isSelected ? styles.selectedItem : null]}
-            onPress={() => setSelectedItem(item)}>
-                <Text style={{fontSize:14, color:'#FFFFFF'}}>{item}</Text>
+                onPress={() => setSelectedItem(item)}>
+                <Text style={{ fontSize: 14, color: '#FFFFFF' }}>{item}</Text>
             </TouchableOpacity>
         )
     };
+    const transactions = [
+        { id: '1', amount: '₹ 15000', type: 'Income', icon: require('../assets/icons/arrow-down.png') },
+        { id: '2', amount: '₹ 6500', type: 'Food', icon: require('../assets/icons/arrow-up.png') },
+        { id: '3', amount: '₹ 28000', type: 'Income', icon: require('../assets/icons/arrow-down.png') },
+    ];
+
+    const renderTransactionItem = ({ item }) => (
+        <View style={styles.singleTransactionContainer}>
+            <View style={[styles.transactionArrowImageContainer, { flex: 1.2 }]}>
+                <Image source={item.icon} style={styles.transactionArrowImage} />
+            </View>
+            <Text style={{ flex: 5.5, fontSize: 22 }}>{item.amount}</Text>
+            <Text style={{ flex: 2, fontSize: 15, color: '#767474' }}>{item.type}</Text>
+        </View>
+    );
+
     return (
         <View style={styles.fullScreenContainer}>
             <View style={styles.imageContainer}>
@@ -61,9 +77,9 @@ const HomeScreen = ({ navigation }) => {
                 </ImageBackground>
             </View>
             <View style={styles.timeContainer}>
-            <FlatList
+                <FlatList
                     data={dataList}
-                    renderItem={ListItem}
+                    renderItem={FilterItem}
                     keyExtractor={(item, index) => index.toString()}
                     horizontal={true}
                 />
@@ -74,30 +90,12 @@ const HomeScreen = ({ navigation }) => {
                     <Text style={{ fontSize: 14, fontFamily: 'Inter' }}>View All</Text>
                 </TouchableOpacity>
             </View>
-            {/* need to change this to 1 component and use multiple times */}
-            <View style={styles.transactionsContainer}>
-                <View style={styles.singleTransactionContainer}>
-                    <View style={{ flex: 1.2, height: 40, width: 40, borderRadius: 20, backgroundColor: '#FFF6E5', justifyContent: 'center', alignItems: 'center', marginLeft: 10 }}>
-                        <Image source={require('../assets/icons/arrow-down.png')} style={styles.transactionArrowImage} />
-                    </View>
-                    <Text style={{ flex: 5.5, fontSize: 22 }}>₹ 15000</Text>
-                    <Text style={{ flex: 2, fontSize: 15, color: '#767474' }}>Income</Text>
-                </View>
-                <View style={styles.singleTransactionContainer}>
-                    <View style={{ flex: 1.2, height: 40, width: 40, borderRadius: 20, backgroundColor: '#FFF6E5', justifyContent: 'center', alignItems: 'center', marginLeft: 10 }}>
-                        <Image source={require('../assets/icons/arrow-up.png')} style={styles.transactionArrowImage} />
-                    </View>
-                    <Text style={{ flex: 5.5, fontSize: 22 }}>₹ 6500</Text>
-                    <Text style={{ flex: 2, fontSize: 15, color: '#767474' }}>Food</Text>
-                </View>
-                <View style={styles.singleTransactionContainer}>
-                    <View style={{ flex: 1.2, height: 40, width: 40, borderRadius: 20, backgroundColor: '#FFF6E5', justifyContent: 'center', alignItems: 'center', marginLeft: 10 }}>
-                        <Image source={require('../assets/icons/arrow-down.png')} style={styles.transactionArrowImage} />
-                    </View>
-                    <Text style={{ flex: 5.5, fontSize: 22 }}>₹ 28000</Text>
-                    <Text style={{ flex: 2, fontSize: 15, color: '#767474' }}>Income</Text>
-                </View>
-            </View>
+            <FlatList
+                data={transactions}
+                renderItem={renderTransactionItem}
+                keyExtractor={(item) => item.id}
+                style={styles.transactionsContainer}
+            />
         </View>
     );
 };
@@ -226,26 +224,33 @@ const styles = StyleSheet.create({
     transactionsContainer: {
         marginTop: 10,
         flexDirection: 'column',
-        justifyContent: 'center',
         rowGap: 18,
-        //padding: 10,
     },
     singleTransactionContainer: {
         height: 54,
         marginLeft: 16,
         marginRight: 16,
-        marginTop: 0,
-        backgroundColor: '#c1b7b7', //'#D9D9D9',
+        backgroundColor: '#c1b7b7',
         borderRadius: 5,
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
+        marginBottom: 20,
         columnGap: 10
+    },
+    transactionArrowImageContainer: {
+        height: 40,
+        width: 40,
+        borderRadius: 20,
+        backgroundColor: '#FFF6E5',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: 10
     },
     transactionArrowImage: {
         width: '50%',
         height: '50%',
-        resizeMode: 'stretch',
+        resizeMode: 'contain',
         transform: [{ rotate: '180deg' }]
     }
 });
