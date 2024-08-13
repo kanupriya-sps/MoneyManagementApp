@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { StyleSheet, Text, View, Dimensions, Image, TouchableOpacity, TextInput, Keyboard } from "react-native";
 
-const ProfileScreen = () => {
+const ProfileScreen = ({ navigation }) => {
 
     const [username, setUsername] = useState("Kanupriya");
     const [isEditing, setIsEditing] = useState(false);
@@ -21,6 +21,10 @@ const ProfileScreen = () => {
         Keyboard.dismiss;
         setIsEditing(false);
     };
+
+    const handleLogoutPress = () => {
+        navigation.navigate('MainScreen')
+    }
 
     return (
         <View style={styles.fullSreenBGContainer}>
@@ -71,7 +75,7 @@ const ProfileScreen = () => {
                     </View>
                     <Text style={styles.flexColumnsText}>Export Data</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.flexColumns}>
+                <TouchableOpacity style={styles.flexColumns} onPress={handleLogoutPress}>
                     <View style={[styles.iconContainer, { backgroundColor: '#FFE2E4' }]}>
                         <Image source={require('../assets/icons/logout.png')} />
                     </View>
