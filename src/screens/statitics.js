@@ -14,10 +14,6 @@ const StatiticsScreen = () => {
     const [filteredTransactions, setFilteredTransactions] = useState([]);
     const transactions = useSelector(state => state.transactions);
 
-    const data = [60, 25, 10, 10];
-    const colors = [ '#FCAC12','#7F3DFF', '#FD3C4A', '#00A86B'];
-    const totalAmount = 9400.0;
-
     useEffect(() => {
         filterTransactions('Expense'); // Default to Expense
     }, []);
@@ -26,6 +22,7 @@ const StatiticsScreen = () => {
         setActiveButton(button);
         filterTransactions(button);
     };
+
     const filterTransactions = (type) => {
         const filtered = transactions
             .filter(transaction => transaction.type === type)
@@ -44,26 +41,32 @@ const StatiticsScreen = () => {
         }
         return color;
     };
-    const dataItems = [
-        {
-            id: 1,
-            category: 'Shopping',
-            amount: '- 5120',
-            color: '#FCAC12'
-        },
-        {
-            id: 2,
-            category: 'Subsription',
-            amount: '- 1280',
-            color: '#7F3DFF'
-        },
-        {
-            id: 3,
-            category: 'Food',
-            amount: '- 532',
-            color: '#FD3C4A'
-        },
-    ];
+
+    const calculatePieData = () => {
+        const groupedData = {};
+
+        filteredTransactions.forEach(transaction => {
+            const amount = Math.abs(parseFloat(transaction.amount.replace(/[^\d.-]/g, '')));
+            if (groupedData[transaction.category]) {
+                groupedData[transaction.category] += amount;
+            } else {
+                groupedData[transaction.category] = amount;
+            }
+        });
+        const data = Object.values(groupedData);
+        const labels = Object.keys(groupedData);
+
+        if (data.length === 0 || data.reduce((sum, value) => sum + value, 0) === 0) {
+            console.warn('No data available for the selected transactions.');
+            return { data: [1], labels: ['No Data'] };
+        }
+        return { data, labels };
+    };
+
+    const { data, labels } = calculatePieData();
+    const colors = ['#FCAC12', '#7F3DFF', '#FD3C4A', '#00A86B', '#FFC300', '#FF5733'];
+    const totalAmount = data.reduce((sum, value) => sum + value, 0);
+
     const months = [
         { label: 'January', value: 'January' },
         { label: 'February', value: 'February' },
@@ -82,28 +85,28 @@ const StatiticsScreen = () => {
     return (
         <View style={styles.fullSreenBGContainer}>
             <DropDownPicker
-                    open={openMonth}
-                    value={selectedMonth}
-                    items={months}
-                    setOpen={setOpenMonth}
-                    setValue={setSelectedMonth}
-                    containerStyle={styles.dropDownOptionContainer}
-                    style={styles.dropDownPicker}
-                    dropDownContainerStyle={styles.dropDownListContainer}
-                    placeholder="Month"
-                />
+                open={openMonth}
+                value={selectedMonth}
+                items={months}
+                setOpen={setOpenMonth}
+                setValue={setSelectedMonth}
+                containerStyle={styles.dropDownOptionContainer}
+                style={styles.dropDownPicker}
+                dropDownContainerStyle={styles.dropDownListContainer}
+                placeholder="Month"
+            />
             <View style={styles.pieContainer}>
                 <PieChart
                     widthAndHeight={190}
                     series={data}
-                    sliceColor={colors}
+                    sliceColor={colors.slice(0, data.length)}
                     coverRadius={0.7}
                     coverFill={'#FFF6E5'}
                 />
                 <Text style={{ fontSize: 25, fontWeight: '700', position: 'absolute' }}>₹ {totalAmount}</Text>
             </View>
             <View style={styles.segmentContainer}>
-            <TouchableOpacity
+                <TouchableOpacity
                     style={[
                         styles.segmentButtons,
                         activeButton === 'Expense' ? styles.activeButton : styles.inactiveButton
@@ -127,34 +130,10 @@ const StatiticsScreen = () => {
                             activeButton === 'Income' ? styles.activeText : styles.inactiveText
                         ]} >Income</Text>
                 </TouchableOpacity>
-                {/* <TouchableOpacity
-                    style={[
-                        styles.segmentButtons,
-                        activeButton === 'Expense' ? styles.activeButton : styles.inactiveButton
-                    ]}
-                    onPress={() => handlePress('Expense')}>
-                    <Text
-                        style={[
-                            styles.segmentText,
-                            activeButton === 'Expense' ? styles.activeText : styles.inactiveText
-                        ]} >Expense</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={[
-                        styles.segmentButtons,
-                        activeButton === 'Income' ? styles.activeButton : styles.inactiveButton
-                    ]}
-                    onPress={() => handlePress('Income')}>
-                    <Text
-                        style={[
-                            styles.segmentText,
-                            activeButton === 'Income' ? styles.activeText : styles.inactiveText
-                        ]} >Income</Text>
-                </TouchableOpacity> */}
             </View>
-            <View style={{marginTop: 20, marginBottom: 50}}>
-            <ProgressBarComponent transactions={filteredTransactions} />
-                </View>
+            <View style={{ marginTop: 20, marginBottom: 50 }}>
+                <ProgressBarComponent transactions={filteredTransactions} />
+            </View>
         </View>
     )
 };
@@ -178,7 +157,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFF6E5',
         borderColor: '#F1F1FA',
         borderRadius: 40
-      },
+    },
     dropDownListContainer: {
         borderRadius: 20,
         borderWidth: 1,

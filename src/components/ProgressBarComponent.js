@@ -2,13 +2,6 @@ import React from 'react';
 import { View, Text, StyleSheet, Dimensions, ScrollView } from 'react-native';
 import * as Progress from 'react-native-progress';
 
-const categories = [
-    { label: 'Shopping', value: 0.8, color: '#FCAC12', amount: '5120' },
-    { label: 'Subscription', value: 0.2, color: '#6A00FF', amount: '1280' },
-    { label: 'Food', value: 0.1, color: '#FD3C4A', amount: '532' },
-    { label: 'Grocery', value: 0.1, color: '#00A86B', amount: '412' }
-];
-
 const ProgressBarComponent = ({ transactions }) => {
     return (
         <ScrollView style={styles.container}>
