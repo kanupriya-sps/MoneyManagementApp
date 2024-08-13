@@ -1,5 +1,12 @@
 // reducers.js
-import { ADD_TRANSACTION , SET_SELECTED_MONTH, SET_SELECTED_FILTER, SET_SELECTED_HOME_FILTER} from './actions';
+import {
+    ADD_TRANSACTION,
+    SET_SELECTED_MONTH,
+    SET_SELECTED_FILTER,
+    SET_SELECTED_HOME_FILTER,
+    UPDATE_USERNAME,
+    setUpdatedUsername
+} from './actions';
 
 const initialState = {
     transactions: [
@@ -86,7 +93,8 @@ const initialState = {
     ],
     selectedMonth: 'Month',
     selectedFilter: 'All',
-    selectedHomeFilter: 'Today'
+    selectedHomeFilter: 'Today',
+    username: 'Kanupriya',
 };
 
 let nextId = initialState.transactions.length + 1;
@@ -111,10 +119,15 @@ const transactionReducer = (state = initialState, action) => {
                 ...state,
                 selectedFilter: action.payload,
             };
-            case SET_SELECTED_HOME_FILTER:
+        case SET_SELECTED_HOME_FILTER:
             return {
                 ...state,
                 selectedHomeFilter: action.payload,
+            };
+            case UPDATE_USERNAME:
+            return {
+                ...state,
+                username: action.payload,
             };
         default:
             return state;

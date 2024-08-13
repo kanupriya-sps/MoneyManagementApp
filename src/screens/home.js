@@ -6,6 +6,7 @@ const HomeScreen = ({ navigation }) => {
 
     const dataList = ['Today', 'Week', 'Month', 'Year'];
     const [selectedItem, setSelectedItem] = useState('Today');
+    const username = useSelector(state => state.username);
     const currentDate = new Date();
     const dateName = currentDate.toISOString().split('T')[0];
     const monthName = currentDate.toLocaleString('en-US', { month: 'long' });
@@ -85,7 +86,7 @@ const HomeScreen = ({ navigation }) => {
     const totalIncome = calculateTotals('Income');
     const totalExpense = calculateTotals('Expense');
     const accountBalance = (totalIncome - totalExpense).toFixed(2);
-    console.log('account balance : ' , accountBalance)
+    console.log('account balance : ', accountBalance)
 
     return (
         <View style={styles.fullScreenContainer}>
@@ -103,7 +104,7 @@ const HomeScreen = ({ navigation }) => {
                             </View>
                         </View>
                         <View style={{ flex: 2, paddingTop: 12 }}>
-                            <Text style={{ fontSize: 15 }}>KANUPRIYA</Text>
+                            <Text style={{ fontSize: 15 }}>{username.toUpperCase()}</Text>
                         </View>
                     </View>
                     <View style={styles.dividingLineContainer} />

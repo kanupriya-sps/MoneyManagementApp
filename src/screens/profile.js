@@ -1,30 +1,33 @@
 import React, { useState, useRef, useEffect } from "react";
 import { StyleSheet, Text, View, Dimensions, Image, TouchableOpacity, TextInput, Keyboard } from "react-native";
+import { useSelector, useDispatch } from 'react-redux';
+import { setUpdatedUsername } from "../redux/actions";
 
 const ProfileScreen = ({ navigation }) => {
 
-    const [username, setUsername] = useState("Kanupriya");
-    const [isEditing, setIsEditing] = useState(false);
     const inputRef = useRef(null);
+    const username = useSelector(state => state.username);
+    const [isEditable, setIsEditable] = useState(false);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        if (isEditing) {
+        if (isEditable) {
             inputRef.current.focus(); // Focus the TextInput when editing mode is enabled
         }
-    }, [isEditing]);
+    }, [isEditable]);
 
     const handleEditPress = () => {
-        setIsEditing(true);
+        setIsEditable(true);
     };
 
     const handleDonePress = () => {
-        Keyboard.dismiss;
-        setIsEditing(false);
+        Keyboard.dismiss();
+        setIsEditable(false);
     };
 
     const handleLogoutPress = () => {
         navigation.navigate('MainScreen')
-    }
+    };
 
     return (
         <View style={styles.fullSreenBGContainer}>
@@ -40,11 +43,10 @@ const ProfileScreen = ({ navigation }) => {
                     <Text style={{ fontSize: 14, color: '#91919F' }}>Username</Text>
                     <TextInput
                         ref={inputRef}
-                        style={[styles.nameInput, { borderBottomWidth: isEditing ? 1 : 0 }]}
+                        style={[styles.nameInput, { borderBottomWidth: isEditable ? 1 : 0 }]}
                         value={username}
-                        onChangeText={setUsername}
-                        editable={isEditing}
-                        //autoFocus={isEditing}
+                        onChangeText={(text) => dispatch(setUpdatedUsername(text))}
+                        editable={isEditable}
                         keyboardType='default'
                         returnKeyType="done"
                         onSubmitEditing={handleDonePress}

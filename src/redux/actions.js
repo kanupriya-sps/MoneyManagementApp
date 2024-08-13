@@ -2,6 +2,7 @@ export const ADD_TRANSACTION = 'ADD_TRANSACTION';
 export const SET_SELECTED_MONTH = 'SET_SELECTED_MONTH';
 export const SET_SELECTED_FILTER = 'SET_SELECTED_FILTER';
 export const SET_SELECTED_HOME_FILTER = 'SET_SELECTED_HOME_FILTER';
+export const UPDATE_USERNAME = 'SET_UPDATED_USERNAME';
 
 export const addTransaction = (transaction) => ({
     type: ADD_TRANSACTION,
@@ -21,4 +22,9 @@ export const setSelectedFilter = (filter) => ({
 export const setSelectedHomeFilter = (homeFilter) => ({
     type: SET_SELECTED_HOME_FILTER,
     payload: homeFilter,
+});
+
+export const setUpdatedUsername = (userName) => ({
+    type: UPDATE_USERNAME,
+    payload: userName,
 });
