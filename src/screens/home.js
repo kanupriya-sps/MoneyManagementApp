@@ -38,12 +38,9 @@ const HomeScreen = ({ navigation }) => {
                 const endDate = new Date();
                 const startDate = new Date();
                 endDate.setDate(currentDate.getDate() + 6);
-                startDate.setDate(currentDate)
+                startDate.setDate(currentDate.getDate() - 1)
                 return transactions.filter(item => {
                     const transactionDate = new Date(item.date);
-                    console.log('Current date: ', currentDate)
-                    console.log('transaction date: ', transactionDate)
-                    console.log('transaction end date: ', endDate)
                     return transactionDate >= startDate && transactionDate <= endDate;
                 });
             case 'Month':
@@ -86,7 +83,6 @@ const HomeScreen = ({ navigation }) => {
     const totalIncome = calculateTotals('Income');
     const totalExpense = calculateTotals('Expense');
     const accountBalance = (totalIncome - totalExpense).toFixed(2);
-    console.log('account balance : ', accountBalance)
 
     return (
         <View style={styles.fullScreenContainer}>

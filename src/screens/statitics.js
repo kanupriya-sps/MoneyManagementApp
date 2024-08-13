@@ -57,7 +57,6 @@ const StatiticsScreen = () => {
         const labels = Object.keys(groupedData);
 
         if (data.length === 0 || data.reduce((sum, value) => sum + value, 0) === 0) {
-            console.warn('No data available for the selected transactions.');
             return { data: [1], labels: ['No Data'] };
         }
         return { data, labels };
