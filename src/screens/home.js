@@ -1,14 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Dimensions, Image, Text, ImageBackground, TouchableOpacity, FlatList } from "react-native";
+import { useSelector } from 'react-redux';
 
 const HomeScreen = ({ navigation }) => {
 
     const dataList = ['Today', 'Week', 'Month', 'Year'];
     const [selectedItem, setSelectedItem] = useState('Today');
+    const currentDate = new Date();
+    const dateName = currentDate.toISOString().split('T')[0];
+    const monthName = currentDate.toLocaleString('en-US', { month: 'long' });
+    const dayName = currentDate.toLocaleString('en-US', { weekday: 'long' });
+    const yearName = currentDate.getFullYear();
+
+    const transactions = useSelector(state => state.transactions);
+    const [filteredTransactions, setFilteredTransactions] = useState([]);
 
     const onPressViewAll = () => {
         navigation.navigate('Transactions')
     }
+
     const FilterItem = ({ item }) => {
         const isSelected = item === selectedItem;
         return (
@@ -18,21 +28,64 @@ const HomeScreen = ({ navigation }) => {
             </TouchableOpacity>
         )
     };
-    const transactions = [
-        { id: '1', amount: '₹ 15000', type: 'Income', icon: require('../assets/icons/arrow-down.png') },
-        { id: '2', amount: '₹ 6500', type: 'Food', icon: require('../assets/icons/arrow-up.png') },
-        { id: '3', amount: '₹ 28000', type: 'Income', icon: require('../assets/icons/arrow-down.png') },
-    ];
 
-    const renderTransactionItem = ({ item }) => (
-        <View style={styles.singleTransactionContainer}>
-            <View style={[styles.transactionArrowImageContainer, { flex: 1.2 }]}>
-                <Image source={item.icon} style={styles.transactionArrowImage} />
+    const filterTransactionsArray = () => {
+        switch (selectedItem) {
+            case 'Today':
+                return transactions.filter(item => item.date === dateName)
+            case 'Week':
+                const endDate = new Date();
+                const startDate = new Date();
+                endDate.setDate(currentDate.getDate() + 6);
+                startDate.setDate(currentDate)
+                return transactions.filter(item => {
+                    const transactionDate = new Date(item.date);
+                    console.log('Current date: ', currentDate)
+                    console.log('transaction date: ', transactionDate)
+                    console.log('transaction end date: ', endDate)
+                    return transactionDate >= startDate && transactionDate <= endDate;
+                });
+            case 'Month':
+                return transactions.filter(item => new Date(item.date).toLocaleString('en-US', { month: 'long' }) === monthName);
+            case 'Year':
+                return transactions.filter(item => new Date(item.date).getFullYear() === yearName);
+        }
+    };
+
+    useEffect(() => {
+        setFilteredTransactions(filterTransactionsArray());
+    }, [selectedItem, transactions]);
+
+    const renderTransactionItem = ({ item }) => {
+        const isIncome = item.type === 'Income';
+        const arrowStyle = isIncome
+            ? { transform: [{ rotate: '0deg' }], tintColor: 'green' } // Arrow pointing up (green)
+            : { transform: [{ rotate: '180deg' }], tintColor: 'red' };
+        return (
+            <View style={styles.singleTransactionContainer}>
+                <View style={[styles.transactionArrowImageContainer, { flex: 1.2 }]}>
+                    <Image source={require('../assets/icons/arrow-up.png')} style={[styles.transactionArrowImage, arrowStyle]} />
+                </View>
+                <Text style={{ flex: 5.5, fontSize: 22 }}>{`₹ ${item.amount.replace(/^[+-]\s*/, '')}`}</Text>
+                <Text style={{ flex: 2, fontSize: 15, color: '#767474' }}>{item.type}</Text>
             </View>
-            <Text style={{ flex: 5.5, fontSize: 22 }}>{item.amount}</Text>
-            <Text style={{ flex: 2, fontSize: 15, color: '#767474' }}>{item.type}</Text>
-        </View>
-    );
+        );
+    };
+
+    const calculateTotals = (type) => {
+        return transactions
+            .filter(transaction => transaction.type === type)
+            .reduce((total, transaction) => {
+                const amount = parseFloat(transaction.amount.replace(/[^\d.-]/g, ''));
+                return type === 'Income' ? total + amount : total + Math.abs(amount);
+            }, 0)
+            .toFixed(2);
+    };
+
+    const totalIncome = calculateTotals('Income');
+    const totalExpense = calculateTotals('Expense');
+    const accountBalance = (totalIncome - totalExpense).toFixed(2);
+    console.log('account balance : ' , accountBalance)
 
     return (
         <View style={styles.fullScreenContainer}>
@@ -40,7 +93,7 @@ const HomeScreen = ({ navigation }) => {
                 <ImageBackground source={require('../assets/icons/home-bg.png')} style={styles.bgImage}>
                     <View style={styles.detailContainer}>
                         <View style={{ flex: 4 }}>
-                            <Text style={{ fontSize: 15 }}>MONDAY 9{'\n'}NOVEMBER</Text>
+                            <Text style={{ fontSize: 15 }}>{dayName.toUpperCase()} {currentDate.getDate()}{'\n'}{monthName.toUpperCase()}</Text>
                         </View>
                         <View style={{ flex: 1 }}>
                             <View style={styles.userImageContainerBorder}>
@@ -56,7 +109,7 @@ const HomeScreen = ({ navigation }) => {
                     <View style={styles.dividingLineContainer} />
                     <View style={styles.amountContainer}>
                         <Text style={{ fontSize: 14, color: '#91919F', alignSelf: 'center' }}>Account Balance</Text>
-                        <Text style={{ fontSize: 40, color: '#black', fontWeight: 'bold', marginTop: 20 }}>9400.0</Text>
+                        <Text style={{ fontSize: 40, color: '#black', fontWeight: 'bold', marginTop: 20 }}>{accountBalance}</Text>
                     </View>
                     <View style={styles.buttonContainer}>
                         <View style={styles.incomeContainer}>
@@ -64,14 +117,14 @@ const HomeScreen = ({ navigation }) => {
                                 <Image source={require('../assets/icons/arrow-down.png')} style={{ height: 10, width: 11 }} />
                                 <Image source={require('../assets/icons/income-sq.png')} style={{ height: 16, width: 24 }} />
                             </View>
-                            <Text style={{ fontSize: 17, color: 'white' }}>Income{'\n'}25000</Text>
+                            <Text style={{ fontSize: 17, color: 'white' }}>Income{'\n'}{totalIncome}</Text>
                         </View>
                         <View style={styles.expensesContainer}>
                             <View style={styles.iconContainer}>
                                 <Image source={require('../assets/icons/arrow-up.png')} style={{ height: 10, width: 11 }} />
                                 <Image source={require('../assets/icons/expense-sq.png')} style={{ height: 16, width: 24 }} />
                             </View>
-                            <Text style={{ fontSize: 17, color: 'white' }}>Expenses{'\n'}11200</Text>
+                            <Text style={{ fontSize: 17, color: 'white' }}>Expenses{'\n'}{totalExpense}</Text>
                         </View>
                     </View>
                 </ImageBackground>
@@ -91,9 +144,9 @@ const HomeScreen = ({ navigation }) => {
                 </TouchableOpacity>
             </View>
             <FlatList
-                data={transactions}
+                data={filteredTransactions.slice(0, 3)}
                 renderItem={renderTransactionItem}
-                keyExtractor={(item) => item.id}
+                keyExtractor={(item) => item.id.toString()}
                 style={styles.transactionsContainer}
             />
         </View>
@@ -126,7 +179,6 @@ const styles = StyleSheet.create({
         marginTop: 70,
         marginLeft: 30,
         marginRight: 30
-        // backgroundColor: 'white'
     },
     userImageContainerBorder: {
         height: 42,
@@ -151,7 +203,6 @@ const styles = StyleSheet.create({
     },
     dividingLineContainer: {
         height: 1,
-        // width: 335,
         marginLeft: 12,
         marginRight: 12,
         backgroundColor: '#525252'
@@ -206,7 +257,6 @@ const styles = StyleSheet.create({
     },
     itemContainer: {
         height: 34,
-        //backgroundColor: 'black',
         justifyContent: 'center',
         borderRadius: 16,
         paddingVertical: 8,
