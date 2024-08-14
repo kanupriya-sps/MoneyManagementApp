@@ -3,20 +3,21 @@ import { Text, View, StyleSheet, Dimensions, TouchableOpacity, Image } from "rea
 import PieChart from 'react-native-pie-chart';
 import ProgressBarComponent from "../components/ProgressBarComponent";
 import DropDownPicker from 'react-native-dropdown-picker';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setSelectedMonth } from "../redux/actions";
 
 const StatiticsScreen = () => {
 
     const [activeButton, setActiveButton] = useState('Expense');
-    const [selectedMonth, setSelectedMonth] = useState('Month');
     const [openMonth, setOpenMonth] = useState(false);
-
     const [filteredTransactions, setFilteredTransactions] = useState([]);
     const transactions = useSelector(state => state.transactions);
+    const selectedMonth = useSelector(state => state.selectedMonth);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         filterTransactions('Expense'); // Default to Expense
-    }, []);
+    }, [selectedMonth, transactions]);
 
     const handlePress = (button) => {
         setActiveButton(button);
@@ -25,7 +26,7 @@ const StatiticsScreen = () => {
 
     const filterTransactions = (type) => {
         const filtered = transactions
-            .filter(transaction => transaction.type === type)
+            .filter(transaction => transaction.type === type && transaction.month === selectedMonth)
             .map(transaction => ({
                 ...transaction,
                 color: getRandomColor(),
@@ -88,7 +89,7 @@ const StatiticsScreen = () => {
                 value={selectedMonth}
                 items={months}
                 setOpen={setOpenMonth}
-                setValue={setSelectedMonth}
+                setValue={(callback) => dispatch(setSelectedMonth(callback()))}
                 containerStyle={styles.dropDownOptionContainer}
                 style={styles.dropDownPicker}
                 dropDownContainerStyle={styles.dropDownListContainer}

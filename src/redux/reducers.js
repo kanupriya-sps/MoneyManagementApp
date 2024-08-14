@@ -91,7 +91,7 @@ const initialState = {
             date: '2024-01-12'
         },
     ],
-    selectedMonth: 'Month',
+    selectedMonth: 'January',
     selectedFilter: 'All',
     selectedHomeFilter: 'Today',
     username: 'Kanupriya',
