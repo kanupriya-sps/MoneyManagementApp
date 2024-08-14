@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { StyleSheet, Text, View, Dimensions, Image, TouchableOpacity, TextInput, Keyboard } from "react-native";
 import { useSelector, useDispatch } from 'react-redux';
 import { setUpdatedUsername } from "../redux/actions";
+import { logo, edit, account, settings, upload, logout } from "../utlis/images";
 
 const ProfileScreen = ({ navigation }) => {
 
@@ -35,7 +36,7 @@ const ProfileScreen = ({ navigation }) => {
                 <View style={{ flex: 1 }}>
                     <View style={styles.userImageContainerBorder}>
                         <View style={styles.userImageContainer}>
-                            <Image source={require('../assets/icons/logo.png')} style={styles.userImage} />
+                            <Image source={logo} style={styles.userImage} />
                         </View>
                     </View>
                 </View>
@@ -54,32 +55,32 @@ const ProfileScreen = ({ navigation }) => {
                 </View>
                 <View>
                     <TouchableOpacity style={{ flex: 1, alignItems: 'center', padding: 20 }} onPress={handleEditPress}>
-                        <Image source={require('../assets/icons/edit.png')} ></Image>
+                        <Image source={edit} ></Image>
                     </TouchableOpacity>
                 </View>
             </View>
             <View style={styles.flexContainer}>
                 <TouchableOpacity style={styles.flexColumns}>
                     <View style={styles.iconContainer}>
-                        <Image source={require('../assets/icons/account.png')} />
+                        <Image source={account} />
                     </View>
                     <Text style={styles.flexColumnsText}>Account</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.flexColumns}>
                     <View style={styles.iconContainer}>
-                        <Image source={require('../assets/icons/settings.png')} />
+                        <Image source={settings} />
                     </View>
                     <Text style={styles.flexColumnsText}>Settings</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.flexColumns}>
                     <View style={styles.iconContainer}>
-                        <Image source={require('../assets/icons/upload.png')} />
+                        <Image source={upload} />
                     </View>
                     <Text style={styles.flexColumnsText}>Export Data</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.flexColumns} onPress={handleLogoutPress}>
                     <View style={[styles.iconContainer, { backgroundColor: '#FFE2E4' }]}>
-                        <Image source={require('../assets/icons/logout.png')} />
+                        <Image source={logout} />
                     </View>
                     <Text style={styles.flexColumnsText}>Logout</Text>
                 </TouchableOpacity>

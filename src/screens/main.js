@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, View, Image, Dimensions, Text, TouchableOpacity } from "react-native";
+import { logo } from "../utlis/images";
 
 const MainScreen = ({ navigation }) => {
 
@@ -9,7 +10,7 @@ const MainScreen = ({ navigation }) => {
     return (
         <View>
             <View style={styles.imageContainer}>
-                <Image source={require('../assets/icons/logo.png')} style={styles.iconImage} />
+                <Image source={logo} style={styles.iconImage} />
             </View>
             <View style={styles.textContainer}>
                 <Text style={[{ fontSize: 28, color: 'black', fontWeight: 'bold' }]}>Simple solution for your budget.</Text>

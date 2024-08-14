@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Dimensions, Image, Text, ImageBackground, TouchableOpacity, FlatList } from "react-native";
 import { useSelector } from 'react-redux';
+import { homeBG, logo, arrowDown, incomeSq, arrowUp, expenseSq } from "../utlis/images";
 
 const HomeScreen = ({ navigation }) => {
 
@@ -87,7 +88,7 @@ const HomeScreen = ({ navigation }) => {
     return (
         <View style={styles.fullScreenContainer}>
             <View style={styles.imageContainer}>
-                <ImageBackground source={require('../assets/icons/home-bg.png')} style={styles.bgImage}>
+                <ImageBackground source={homeBG} style={styles.bgImage}>
                     <View style={styles.detailContainer}>
                         <View style={{ flex: 4 }}>
                             <Text style={{ fontSize: 15 }}>{dayName.toUpperCase()} {currentDate.getDate()}{'\n'}{monthName.toUpperCase()}</Text>
@@ -95,7 +96,7 @@ const HomeScreen = ({ navigation }) => {
                         <View style={{ flex: 1 }}>
                             <View style={styles.userImageContainerBorder}>
                                 <View style={styles.userImageContainer}>
-                                    <Image source={require('../assets/icons/logo.png')} style={styles.userImage} />
+                                    <Image source={logo} style={styles.userImage} />
                                 </View>
                             </View>
                         </View>
@@ -111,15 +112,15 @@ const HomeScreen = ({ navigation }) => {
                     <View style={styles.buttonContainer}>
                         <View style={styles.incomeContainer}>
                             <View style={styles.iconContainer}>
-                                <Image source={require('../assets/icons/arrow-down.png')} style={{ height: 10, width: 11 }} />
-                                <Image source={require('../assets/icons/income-sq.png')} style={{ height: 16, width: 24 }} />
+                                <Image source={arrowDown} style={{ height: 10, width: 11 }} />
+                                <Image source={incomeSq} style={{ height: 16, width: 24 }} />
                             </View>
                             <Text style={{ fontSize: 17, color: 'white' }}>Income{'\n'}{totalIncome}</Text>
                         </View>
                         <View style={styles.expensesContainer}>
                             <View style={styles.iconContainer}>
-                                <Image source={require('../assets/icons/arrow-up.png')} style={{ height: 10, width: 11 }} />
-                                <Image source={require('../assets/icons/expense-sq.png')} style={{ height: 16, width: 24 }} />
+                                <Image source={arrowUp} style={{ height: 10, width: 11 }} />
+                                <Image source={expenseSq} style={{ height: 16, width: 24 }} />
                             </View>
                             <Text style={{ fontSize: 17, color: 'white' }}>Expenses{'\n'}{totalExpense}</Text>
                         </View>

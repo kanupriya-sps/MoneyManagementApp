@@ -9,6 +9,7 @@ import TransactionsScreen from './transactions';
 import AddTransactionScreen from './addTransaction';
 import StatiticsScreen from './statitics';
 import ProfileScreen from '../screens/profile';
+import { home, transaction, plus, user, pieChart } from '../utlis/images';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -26,7 +27,7 @@ function TabNavigator() {
                     headerShown: false,
                     tabBarIcon: ({ focused }) => (
                         <Image
-                            source={require('../assets/icons/home.png')}
+                            source={home}
                             style={{ width: 25, height: 25, tintColor: focused ? '#7F3DFF' : 'grey' }}
                         />
                     )
@@ -39,7 +40,7 @@ function TabNavigator() {
                     },
                     tabBarIcon: ({ focused }) => (
                         <Image
-                            source={require('../assets/icons/transaction.png')}
+                            source={transaction}
                             style={{ width: 25, height: 25, tintColor: focused ? '#7F3DFF' : 'grey' }}
                         />
                     )
@@ -52,10 +53,10 @@ function TabNavigator() {
                         backgroundColor: '#FFF6E5',
                     },
                     tabBarIcon: ({ focused }) => (
-                        <View style={{height: 70, width: 70, borderRadius: 35, backgroundColor: '#A89696', justifyContent:'center' ,alignItems:'center'}}>
-                            <View style={{ height: 50, width: 50, borderRadius: 25, backgroundColor: '#7F3DFF',justifyContent:'center', alignItems:'center'}}>
+                        <View style={{ height: 70, width: 70, borderRadius: 35, backgroundColor: '#A89696', justifyContent: 'center', alignItems: 'center' }}>
+                            <View style={{ height: 50, width: 50, borderRadius: 25, backgroundColor: '#7F3DFF', justifyContent: 'center', alignItems: 'center' }}>
                                 <Image
-                                    source={require('../assets/icons/plus.png')}
+                                    source={plus}
                                     style={{ width: 25, height: 25, tintColor: focused ? 'white' : 'white', alignSelf: 'center' }}
                                 />
                             </View>
@@ -71,7 +72,7 @@ function TabNavigator() {
                     tabBarLabel: 'Statitics',
                     tabBarIcon: ({ focused }) => (
                         <Image
-                            source={require('../assets/icons/pie-chart.png')}
+                            source={pieChart}
                             style={{ width: 25, height: 25, tintColor: focused ? '#7F3DFF' : 'grey' }}
                         />
                     )
@@ -84,7 +85,7 @@ function TabNavigator() {
                     },
                     tabBarIcon: ({ focused }) => (
                         <Image
-                            source={require('../assets/icons/user.png')}
+                            source={user}
                             style={{ width: 25, height: 25, tintColor: focused ? '#7F3DFF' : 'grey' }}
                         />
                     )

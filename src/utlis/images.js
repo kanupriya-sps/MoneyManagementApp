@@ -1,0 +1,17 @@
+export const account = require('../assets/icons/account.png');
+export const arrowDown = require('../assets/icons/arrow-down.png');
+export const arrowUp = require('../assets/icons/arrow-up.png');
+export const downArrow = require('../assets/icons/down-arrow.png');
+export const edit = require('../assets/icons/edit.png');
+export const expenseSq = require('../assets/icons/expense-sq.png');
+export const homeBG = require('../assets/icons/home-bg.png');
+export const home = require('../assets/icons/home.png');
+export const incomeSq = require('../assets/icons/income-sq.png');
+export const logo = require('../assets/icons/logo.png');
+export const logout = require('../assets/icons/logout.png');
+export const pieChart = require('../assets/icons/pie-chart.png');
+export const plus = require('../assets/icons/plus.png');
+export const settings = require('../assets/icons/settings.png');
+export const transaction = require('../assets/icons/transaction.png');
+export const upload = require('../assets/icons/upload.png');
+export const user = require('../assets/icons/user.png');
