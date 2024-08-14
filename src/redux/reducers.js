@@ -5,7 +5,6 @@ import {
     SET_SELECTED_FILTER,
     SET_SELECTED_HOME_FILTER,
     UPDATE_USERNAME,
-    setUpdatedUsername
 } from './actions';
 
 const initialState = {
