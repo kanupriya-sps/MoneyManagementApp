@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { StyleSheet, Text, View, Dimensions, Image, TouchableOpacity, TextInput, Keyboard } from "react-native";
 import { useSelector, useDispatch } from 'react-redux';
 import { setUpdatedUsername } from "../redux/actions";
-import { logo, edit, account, settings, upload, logout } from "../utlis/images";
+import { logo, edit, account, settings, upload, logout } from '../utils/images';
 
 const ProfileScreen = ({ navigation }) => {
 

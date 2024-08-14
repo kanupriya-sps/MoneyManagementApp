@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View, Image, Dimensions, Text, TouchableOpacity } from "react-native";
-import { logo } from "../utlis/images";
+import { logo } from '../utils/images';
 
 const MainScreen = ({ navigation }) => {
 

@@ -9,7 +9,7 @@ import TransactionsScreen from './transactions';
 import AddTransactionScreen from './addTransaction';
 import StatiticsScreen from './statitics';
 import ProfileScreen from '../screens/profile';
-import { home, transaction, plus, user, pieChart } from '../utlis/images';
+import { home, transaction, plus, user, pieChart } from '../utils/images';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();

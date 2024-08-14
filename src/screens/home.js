@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Dimensions, Image, Text, ImageBackground, TouchableOpacity, FlatList } from "react-native";
 import { useSelector } from 'react-redux';
-import { homeBG, logo, arrowDown, incomeSq, arrowUp, expenseSq } from "../utlis/images";
+import { homeBG, logo, arrowDown, incomeSq, arrowUp, expenseSq } from '../utils/images';
 
 const HomeScreen = ({ navigation }) => {
 
