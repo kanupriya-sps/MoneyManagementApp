@@ -13,72 +13,6 @@ const TransactionsScreen = () => {
     const [openMonth, setOpenMonth] = useState(false);
     const [openFilter, setOpenFilter] = useState(false);
 
-    // const listData = [
-    //     {
-    //         id: 1,
-    //         category: 'Shopping',
-    //         description: 'Buy some grocery',
-    //         type: 'Expense',
-    //         amount: '- 5120',
-    //         month: 'November',
-    //         time: '10:00 AM'
-    //     },
-    //     {
-    //         id: 2,
-    //         category: 'Food',
-    //         description: 'Arabian Hut',
-    //         type: 'Expense',
-    //         amount: '- 532',
-    //         month: 'May',
-    //         time: '07:30 PM'
-    //     },
-    //     {
-    //         id: 3,
-    //         category: 'Salary',
-    //         description: 'Salary for august',
-    //         type: 'Income',
-    //         amount: '+ 5000',
-    //         month: 'July',
-    //         time: '03:30 PM'
-    //     },
-    //     {
-    //         id: 4,
-    //         category: 'Subsription',
-    //         description: 'Disney + Annual',
-    //         type: 'Expense',
-    //         amount: '- 1180',
-    //         month: 'September',
-    //         time: '10:00 PM'
-    //     },
-    //     {
-    //         id: 5,
-    //         category: 'Fuel',
-    //         description: 'kozhikode',
-    //         type: 'Expense',
-    //         amount: '- 1000',
-    //         month: 'May',
-    //         time: '07:30 PM'
-    //     },
-    //     {
-    //         id: 6,
-    //         category: 'Cinema',
-    //         description: 'lulu mall',
-    //         type: 'Expense',
-    //         amount: '- 507',
-    //         month: 'October',
-    //         time: '02:45 PM'
-    //     },
-    //     {
-    //         id: 7,
-    //         category: 'Loan',
-    //         description: 'Car loan',
-    //         type: 'Expense',
-    //         amount: '- 4700',
-    //         month: 'January',
-    //         time: '11:20 AM'
-    //     },
-    // ];
-
     const months = [
         { label: 'January', value: 'January' },
         { label: 'February', value: 'February' },
@@ -111,12 +45,12 @@ const TransactionsScreen = () => {
         return (
             <View style={styles.listItemViewContainer}>
                 <View style={styles.listItemDetailContainer}>
-                    <Text style={{ fontSize: 16, color: 'black' }}>{item.category}</Text>
-                    <Text style={{ fontSize: 16, color: '#FD3C4A' }}>{item.amount}</Text>
+                    <Text style={styles.categoryText}>{item.category}</Text>
+                    <Text style={styles.amountText}>{item.amount}</Text>
                 </View>
                 <View style={styles.listItemDetailContainer}>
-                    <Text style={{ fontSize: 13, color: '#91919F' }}>{item.description}</Text>
-                    <Text style={{ fontSize: 13, color: '#91919F' }}>{item.time}</Text>
+                    <Text style={styles.descriptionText}>{item.description}</Text>
+                    <Text style={styles.timeText}>{item.time}</Text>
                 </View>
             </View>
         )
@@ -219,6 +153,22 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
+    },
+    categoryText: {
+        fontSize: 16,
+        color: 'black'
+    },
+    descriptionText: {
+        fontSize: 13,
+        color: '#91919F'
+    },
+    amountText: {
+        fontSize: 16,
+        color: '#FD3C4A'
+    },
+    timeText: {
+        fontSize: 13,
+        color: '#91919F'
     }
 });
 

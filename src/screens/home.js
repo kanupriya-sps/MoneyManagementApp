@@ -100,29 +100,29 @@ const HomeScreen = ({ navigation }) => {
                                 </View>
                             </View>
                         </View>
-                        <View style={{ flex: 2, paddingTop: 12 }}>
+                        <View style={styles.usernameContainer}>
                             <Text style={{ fontSize: 15 }}>{username.toUpperCase()}</Text>
                         </View>
                     </View>
                     <View style={styles.dividingLineContainer} />
                     <View style={styles.amountContainer}>
-                        <Text style={{ fontSize: 14, color: '#91919F', alignSelf: 'center' }}>Account Balance</Text>
-                        <Text style={{ fontSize: 40, color: '#black', fontWeight: 'bold', marginTop: 20 }}>{accountBalance}</Text>
+                        <Text style={styles.amountHeadingText}>Account Balance</Text>
+                        <Text style={styles.amountText}>{accountBalance}</Text>
                     </View>
                     <View style={styles.buttonContainer}>
                         <View style={styles.incomeContainer}>
                             <View style={styles.iconContainer}>
-                                <Image source={arrowDown} style={{ height: 10, width: 11 }} />
-                                <Image source={incomeSq} style={{ height: 16, width: 24 }} />
+                                <Image source={arrowDown} style={styles.iconImageUp} />
+                                <Image source={incomeSq} style={styles.iconImageDown} />
                             </View>
-                            <Text style={{ fontSize: 17, color: 'white' }}>Income{'\n'}{totalIncome}</Text>
+                            <Text style={styles.buttonText}>Income{'\n'}{totalIncome}</Text>
                         </View>
                         <View style={styles.expensesContainer}>
                             <View style={styles.iconContainer}>
-                                <Image source={arrowUp} style={{ height: 10, width: 11 }} />
-                                <Image source={expenseSq} style={{ height: 16, width: 24 }} />
+                                <Image source={arrowUp} style={styles.iconImageUp} />
+                                <Image source={expenseSq} style={styles.iconImageDown} />
                             </View>
-                            <Text style={{ fontSize: 17, color: 'white' }}>Expenses{'\n'}{totalExpense}</Text>
+                            <Text style={styles.buttonText}>Expenses{'\n'}{totalExpense}</Text>
                         </View>
                     </View>
                 </ImageBackground>
@@ -136,9 +136,9 @@ const HomeScreen = ({ navigation }) => {
                 />
             </View>
             <View style={styles.transactionHeadingContainer}>
-                <Text style={{ fontSize: 14, fontFamily: 'Inter' }}>Recent Transaction</Text>
+                <Text style={styles.transactionHeadingText}>Recent Transaction</Text>
                 <TouchableOpacity onPress={() => onPressViewAll()}>
-                    <Text style={{ fontSize: 14, fontFamily: 'Inter' }}>View All</Text>
+                    <Text style={styles.transactionHeadingText}>View All</Text>
                 </TouchableOpacity>
             </View>
             <FlatList
@@ -199,6 +199,10 @@ const styles = StyleSheet.create({
         height: '100%',
         resizeMode: 'cover'
     },
+    usernameContainer: {
+        flex: 2,
+        paddingTop: 12
+    },
     dividingLineContainer: {
         height: 1,
         marginLeft: 12,
@@ -208,6 +212,17 @@ const styles = StyleSheet.create({
     amountContainer: {
         padding: 30,
         alignSelf: 'center'
+    },
+    amountHeadingText: {
+        fontSize: 14,
+        color: '#91919F',
+        alignSelf: 'center'
+    },
+    amountText: {
+        fontSize: 40,
+        color: '#black',
+        fontWeight: 'bold',
+        marginTop: 20
     },
     buttonContainer: {
         flexDirection: 'row',
@@ -244,6 +259,18 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    iconImageUp: {
+        height: 10,
+        width: 11
+    },
+    iconImageDown: {
+        height: 16,
+        width: 24
+    },
+    buttonText: {
+        fontSize: 17,
+        color: 'white'
+    },
     timeContainer: {
         borderWidth: 1,
         borderColor: 'white',
@@ -268,6 +295,10 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         padding: 20,
         marginTop: 15
+    },
+    transactionHeadingText: {
+        fontSize: 14,
+        fontFamily: 'Inter'
     },
     transactionsContainer: {
         marginTop: 10,

@@ -103,7 +103,7 @@ const StatiticsScreen = () => {
                     coverRadius={0.7}
                     coverFill={'#FFF6E5'}
                 />
-                <Text style={{ fontSize: 25, fontWeight: '700', position: 'absolute' }}>₹ {totalAmount}</Text>
+                <Text style={styles.totalAmountText}>₹ {totalAmount}</Text>
             </View>
             <View style={styles.segmentContainer}>
                 <TouchableOpacity
@@ -131,7 +131,7 @@ const StatiticsScreen = () => {
                         ]} >Income</Text>
                 </TouchableOpacity>
             </View>
-            <View style={{ marginTop: 20, marginBottom: 50 }}>
+            <View style={styles.ProgressBarComponentContainer}>
                 <ProgressBarComponent transactions={filteredTransactions} />
             </View>
         </View>
@@ -173,6 +173,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         position: 'relative'
+    },
+    totalAmountText: {
+        fontSize: 25,
+        fontWeight: '700',
+        position: 'absolute'
     },
     segmentContainer: {
         height: 60,
@@ -218,6 +223,10 @@ const styles = StyleSheet.create({
     progressBar: {
         marginHorizontal: 10,
     },
+    ProgressBarComponentContainer: {
+        marginTop: 20,
+        marginBottom: 50
+    }
 });
 
 export default StatiticsScreen;

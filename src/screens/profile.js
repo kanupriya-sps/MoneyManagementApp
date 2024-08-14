@@ -40,8 +40,8 @@ const ProfileScreen = ({ navigation }) => {
                         </View>
                     </View>
                 </View>
-                <View style={{ flex: 1.5, flexDirection: 'column', alignItems: 'center' }}>
-                    <Text style={{ fontSize: 14, color: '#91919F' }}>Username</Text>
+                <View style={[styles.usernameContainer, { flex: 1.5 }]}>
+                    <Text style={styles.usernameText}>Username</Text>
                     <TextInput
                         ref={inputRef}
                         style={[styles.nameInput, { borderBottomWidth: isEditable ? 1 : 0 }]}
@@ -54,7 +54,7 @@ const ProfileScreen = ({ navigation }) => {
                     />
                 </View>
                 <View>
-                    <TouchableOpacity style={{ flex: 1, alignItems: 'center', padding: 20 }} onPress={handleEditPress}>
+                    <TouchableOpacity style={[styles.editContainer, { flex: 1 }]} onPress={handleEditPress}>
                         <Image source={edit} ></Image>
                     </TouchableOpacity>
                 </View>
@@ -123,12 +123,24 @@ const styles = StyleSheet.create({
         height: '100%',
         resizeMode: 'cover'
     },
+    usernameContainer: {
+        flexDirection: 'column',
+        alignItems: 'center'
+    },
+    usernameText: {
+        fontSize: 14,
+        color: '#91919F'
+    },
     nameInput: {
         fontSize: 24,
         color: '#161719',
         textAlign: 'center',
 
         borderBottomColor: '#AD00FF',
+    },
+    editContainer: {
+        alignItems: 'center',
+        padding: 20
     },
     flexContainer: {
         flex: 1,

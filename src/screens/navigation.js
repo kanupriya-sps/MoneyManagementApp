@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -28,7 +28,7 @@ function TabNavigator() {
                     tabBarIcon: ({ focused }) => (
                         <Image
                             source={home}
-                            style={{ width: 25, height: 25, tintColor: focused ? '#7F3DFF' : 'grey' }}
+                            style={[styles.tabbarIconImage, { tintColor: focused ? '#7F3DFF' : 'grey' }]}
                         />
                     )
                 }} />
@@ -41,7 +41,7 @@ function TabNavigator() {
                     tabBarIcon: ({ focused }) => (
                         <Image
                             source={transaction}
-                            style={{ width: 25, height: 25, tintColor: focused ? '#7F3DFF' : 'grey' }}
+                            style={[styles.tabbarIconImage, { tintColor: focused ? '#7F3DFF' : 'grey' }]}
                         />
                     )
                 }} />
@@ -53,11 +53,11 @@ function TabNavigator() {
                         backgroundColor: '#FFF6E5',
                     },
                     tabBarIcon: ({ focused }) => (
-                        <View style={{ height: 70, width: 70, borderRadius: 35, backgroundColor: '#A89696', justifyContent: 'center', alignItems: 'center' }}>
-                            <View style={{ height: 50, width: 50, borderRadius: 25, backgroundColor: '#7F3DFF', justifyContent: 'center', alignItems: 'center' }}>
+                        <View style={styles.addOuterContainer}>
+                            <View style={styles.addInnerContainer}>
                                 <Image
                                     source={plus}
-                                    style={{ width: 25, height: 25, tintColor: focused ? 'white' : 'white', alignSelf: 'center' }}
+                                    style={[styles.addImage, { tintColor: focused ? 'white' : 'white' }]}
                                 />
                             </View>
                         </View>
@@ -73,7 +73,7 @@ function TabNavigator() {
                     tabBarIcon: ({ focused }) => (
                         <Image
                             source={pieChart}
-                            style={{ width: 25, height: 25, tintColor: focused ? '#7F3DFF' : 'grey' }}
+                            style={[styles.tabbarIconImage, { tintColor: focused ? '#7F3DFF' : 'grey' }]}
                         />
                     )
                 }} />
@@ -86,7 +86,7 @@ function TabNavigator() {
                     tabBarIcon: ({ focused }) => (
                         <Image
                             source={user}
-                            style={{ width: 25, height: 25, tintColor: focused ? '#7F3DFF' : 'grey' }}
+                            style={[styles.tabbarIconImage, { tintColor: focused ? '#7F3DFF' : 'grey' }]}
                         />
                     )
                 }} />
@@ -126,5 +126,33 @@ function Navigation() {
         </NavigationContainer>
     );
 }
+
+const styles = StyleSheet.create({
+    tabbarIconImage: {
+        width: 25,
+        height: 25,
+    },
+    addOuterContainer: {
+        height: 70,
+        width: 70,
+        borderRadius: 35,
+        backgroundColor: '#A89696',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    addInnerContainer: {
+        height: 50,
+        width: 50,
+        borderRadius: 25,
+        backgroundColor: '#7F3DFF',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    addImage: {
+        width: 25,
+        height: 25,
+        alignSelf: 'center'
+    }
+});
 
 export default Navigation;

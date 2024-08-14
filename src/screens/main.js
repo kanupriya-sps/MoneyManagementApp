@@ -13,10 +13,10 @@ const MainScreen = ({ navigation }) => {
                 <Image source={logo} style={styles.iconImage} />
             </View>
             <View style={styles.textContainer}>
-                <Text style={[{ fontSize: 28, color: 'black', fontWeight: 'bold' }]}>Simple solution for your budget.</Text>
-                <Text style={[{ fontSize: 18, color: 'black', marginTop: 30 }]}>Counter and distribute the income correctly...</Text>
-                <TouchableOpacity style={styles.button} onPress={()=> onPressContinue()}>
-                    <Text style={{ fontSize: 18, color: 'white' }}>Continue</Text>
+                <Text style={styles.headingText}>Simple solution for your budget.</Text>
+                <Text style={styles.subHeading}>Counter and distribute the income correctly...</Text>
+                <TouchableOpacity style={styles.button} onPress={() => onPressContinue()}>
+                    <Text style={styles.buttonText}>Continue</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -42,6 +42,16 @@ const styles = StyleSheet.create({
         marginTop: 160,
         // height: 69,
     },
+    headingText: {
+        fontSize: 28,
+        color: 'black',
+        fontWeight: 'bold'
+    },
+    subHeading: {
+        fontSize: 18,
+        color: 'black',
+        marginTop: 30
+    },
     button: {
         alignItems: 'center',
         color: 'white',
@@ -53,5 +63,9 @@ const styles = StyleSheet.create({
         height: 42,
         width: 194
     },
+    buttonText: {
+        fontSize: 18,
+        color: 'white'
+    }
 });
 export default MainScreen;
