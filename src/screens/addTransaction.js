@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Text, View, StyleSheet, Dimensions, TouchableOpacity, Modal, TextInput, Keyboard } from "react-native";
 import { useDispatch } from 'react-redux';
-
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Calendar } from 'react-native-calendars';
 import { addTransaction } from "../redux/actions";
