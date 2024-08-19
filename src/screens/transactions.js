@@ -41,7 +41,6 @@ const TransactionsScreen = () => {
     });
 
     const flatListItem = ({ item }) => {
-        console.log('Rendering item:', item);
         return (
             <View style={styles.listItemViewContainer}>
                 <View style={styles.listItemDetailContainer}>

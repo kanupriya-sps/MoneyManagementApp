@@ -26,7 +26,7 @@ const HomeScreen = ({ navigation }) => {
         return (
             <TouchableOpacity style={[styles.itemContainer, isSelected ? styles.selectedItem : null]}
                 onPress={() => setSelectedItem(item)}>
-                <Text style={{ fontSize: 14, color: '#FFFFFF' }}>{item}</Text>
+                <Text style={styles.filteredItemText}>{item}</Text>
             </TouchableOpacity>
         )
     };
@@ -331,6 +331,10 @@ const styles = StyleSheet.create({
         height: '50%',
         resizeMode: 'contain',
         transform: [{ rotate: '180deg' }]
+    },
+    filteredItemText: {
+        fontSize: 14,
+        color: '#FFFFFF'
     }
 });
 
