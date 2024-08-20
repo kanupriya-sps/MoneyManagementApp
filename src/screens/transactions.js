@@ -8,7 +8,6 @@ const TransactionsScreen = () => {
 
     const dispatch = useDispatch();
     const { transactions, selectedMonth, selectedFilter } = useSelector(state => state);
-    console.log('Before dispatching: ', { selectedMonth, selectedFilter });
 
     const [openMonth, setOpenMonth] = useState(false);
     const [openFilter, setOpenFilter] = useState(false);

@@ -6,16 +6,19 @@
  */
 
 import React from 'react';
-import Navigation from './src/screens/navigation';
 import { Provider } from 'react-redux';
-import store from './src/redux/store';
+import { PersistGate } from 'redux-persist/integration/react';
+import { store, persistor } from './src/redux/store';
+import Navigation from './src/screens/navigation';
 
 function App(): React.JSX.Element {
-  
+
   return (
     <Provider store={store}>
-      <Navigation />
-      </Provider>
-    ); 
+      <PersistGate loading={null} persistor={persistor}>
+        <Navigation />
+      </PersistGate>
+    </Provider>
+  );
 }
 export default App;
