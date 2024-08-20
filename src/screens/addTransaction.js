@@ -1,9 +1,16 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet, Dimensions, TouchableOpacity, Modal, TextInput , Keyboard} from "react-native";
+import { Text, View, StyleSheet, Dimensions, TouchableOpacity, Modal, TextInput, Keyboard } from "react-native";
+import { useDispatch } from 'react-redux';
+
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Calendar } from 'react-native-calendars';
+import { addTransaction } from "../redux/actions";
+import { useNavigation } from "@react-navigation/native";
 
 const AddTransactionScreen = () => {
+
+    const dispatch = useDispatch();
+    const navigation = useNavigation();
 
     const [selectedCategory, setSelectedCategory] = useState('Category');
     const [openCategory, setOpenCategory] = useState(false);
@@ -31,21 +38,36 @@ const AddTransactionScreen = () => {
         { label: 'Subscription', value: 'Subscription' },
         { label: 'Shopping', value: 'Shopping' },
     ];
-    const handleContinue = () => {
-        const transactionData = {
+
+    const handleSubmit = () => {
+        const transaction = {
+            id: new Date().getTime(), // Generate a unique ID
             category: selectedCategory,
             description: selectedDescription,
-            date: selectedDate,
             type: transactionType,
+            amount: transactionType === 'Income' ? `+ ${amount}` : `- ${amount}`, // Example amount, replace with your input
+            month: new Date(selectedDate).toLocaleString('default', { month: 'long' }),
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }),
+            date: selectedDate
         };
-        console.log("transactionData" ,transactionData); // You can store this object or send it to a backend service
-    };
 
+        dispatch(addTransaction(transaction));
+
+        // Reset form
+        setSelectedCategory(null);
+        setSelectedDescription(null);
+        setSelectedDate(null);
+        setTransactionType(null);
+        setAmount(null);
+
+        // Navigate to Transactions screen
+        navigation.navigate('TransactionsScreen');
+    };
     return (
         <View style={styles.fullSreenBGContainer}>
             {/* need to make this text input */}
             <View style={styles.amountContainer}>
-                <Text style={{ fontSize: 18, paddingHorizontal: 40, marginTop: 70 }}>How much?</Text>
+                <Text style={styles.amountContainerHeadingText}>How much?</Text>
                 {!isFocused && !amount && (
                     <Text style={styles.placeholderText}>Enter amount</Text>
                 )}
@@ -55,8 +77,8 @@ const AddTransactionScreen = () => {
                     value={amount}
                     onChangeText={setAmount}
                     keyboardType="numeric"
-                    returnKeyType="done" 
-                    onSubmitEditing={Keyboard.dismiss} 
+                    returnKeyType="done"
+                    onSubmitEditing={Keyboard.dismiss}
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
                 />
@@ -89,20 +111,20 @@ const AddTransactionScreen = () => {
                     zIndexInverse={2000}
                 />
                 <View style={styles.flexColumnsWithButton}>
-                    <TouchableOpacity style={{ backgroundColor: '#00A86B', borderRadius: 14, width: 80 }}
+                    <TouchableOpacity style={styles.incomeButton}
                         onPress={() => setTransactionType('Income')}>
-                        <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#FFFFFF', padding: 5, alignSelf: 'center' }}>Income</Text>
+                        <Text style={styles.incomeButtonText}>Income</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{ backgroundColor: '#FD3C4A', borderRadius: 14, width: 80 }}
+                    <TouchableOpacity style={styles.expenseButton}
                         onPress={() => setTransactionType('Expense')}>
-                        <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#FFFFFF', padding: 5, alignSelf: 'center' }}>Expense</Text>
+                        <Text style={styles.expenseButtonText}>Expense</Text>
                     </TouchableOpacity>
                 </View>
                 <TouchableOpacity style={styles.dateContainer} onPress={() => setIsCalendarVisible(!isCalendarVisible)}>
                     {selectedDate == null ? (
-                        <Text style={{ fontSize: 16, color: '#91919F' }}>Pick Your Date</Text>
+                        <Text style={styles.dateText}>Pick Your Date</Text>
                     ) : (
-                        <Text style={{ fontSize: 16, color: '#91919F' }}>{selectedDate}</Text>
+                        <Text style={styles.dateText}>{selectedDate}</Text>
                     )}
                 </TouchableOpacity>
                 {isCalendarVisible && (
@@ -129,8 +151,8 @@ const AddTransactionScreen = () => {
                     </Modal>
                 )}
             </View>
-            <TouchableOpacity style={styles.continueButton} onPress={handleContinue}>
-                <Text style={{ fontSize: 18, fontWeight: '600', color: '#FCFCFC', alignSelf: 'center' }}>Continue</Text>
+            <TouchableOpacity style={styles.continueButton} onPress={handleSubmit}>
+                <Text style={styles.continueButtonText}>Continue</Text>
             </TouchableOpacity>
         </View>
     );
@@ -145,6 +167,11 @@ const styles = StyleSheet.create({
     amountContainer: {
         height: 150,
         width: Dimensions.get('window').width,
+    },
+    amountContainerHeadingText: {
+        fontSize: 18,
+        paddingHorizontal: 40,
+        marginTop: 70
     },
     placeholderText: {
         fontSize: 14,  // Smaller size for placeholder
@@ -200,6 +227,30 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         columnGap: 12
     },
+    incomeButton: {
+        backgroundColor: '#00A86B',
+        borderRadius: 14,
+        width: 80
+    },
+    incomeButtonText: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: '#FFFFFF',
+        padding: 5,
+        alignSelf: 'center'
+    },
+    expenseButton: {
+        backgroundColor: '#FD3C4A',
+        borderRadius: 14,
+        width: 80
+    },
+    expenseButtonText: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: '#FFFFFF',
+        padding: 5,
+        alignSelf: 'center'
+    },
     dateContainer: {
         width: '90%',
         height: 50,
@@ -211,6 +262,10 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         paddingHorizontal: 10,
         alignItems: 'center',
+    },
+    dateText: {
+        fontSize: 16,
+        color: '#91919F'
     },
     modalContainer: {
         flex: 1,
@@ -242,6 +297,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#7F3DFF',
         marginTop: 40,
         marginBottom: 250
+    },
+    continueButtonText: {
+        fontSize: 18,
+        fontWeight: '600',
+        color: '#FCFCFC',
+        alignSelf: 'center'
     }
 })
 

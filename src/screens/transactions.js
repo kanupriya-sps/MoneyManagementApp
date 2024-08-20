@@ -1,79 +1,17 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from 'react-redux';
 import { Text, StyleSheet, Dimensions, View, TouchableOpacity, Image, FlatList } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
+import { setSelectedMonth, setSelectedFilter } from "../redux/actions";
 
 const TransactionsScreen = () => {
 
-    const [selectedMonth, setSelectedMonth] = useState('Month');
-    const [selectedFilter, setSelectedFilter] = useState('All');
+    const dispatch = useDispatch();
+    const { transactions, selectedMonth, selectedFilter } = useSelector(state => state);
+    console.log('Before dispatching: ', { selectedMonth, selectedFilter });
+
     const [openMonth, setOpenMonth] = useState(false);
     const [openFilter, setOpenFilter] = useState(false);
-
-    const listData = [
-        {
-            id: 1,
-            category: 'Shopping',
-            description: 'Buy some grocery',
-            type: 'Expense',
-            amount: '- 5120',
-            month: 'November',
-            time: '10:00 AM'
-        },
-        {
-            id: 2,
-            category: 'Food',
-            description: 'Arabian Hut',
-            type: 'Expense',
-            amount: '- 532',
-            month: 'May',
-            time: '07:30 PM'
-        },
-        {
-            id: 3,
-            category: 'Salary',
-            description: 'Salary for august',
-            type: 'Income',
-            amount: '+ 5000',
-            month: 'July',
-            time: '03:30 PM'
-        },
-        {
-            id: 4,
-            category: 'Subsription',
-            description: 'Disney + Annual',
-            type: 'Expense',
-            amount: '- 1180',
-            month: 'September',
-            time: '10:00 PM'
-        },
-        {
-            id: 5,
-            category: 'Fuel',
-            description: 'kozhikode',
-            type: 'Expense',
-            amount: '- 1000',
-            month: 'May',
-            time: '07:30 PM'
-        },
-        {
-            id: 6,
-            category: 'Cinema',
-            description: 'lulu mall',
-            type: 'Expense',
-            amount: '- 507',
-            month: 'October',
-            time: '02:45 PM'
-        },
-        {
-            id: 7,
-            category: 'Loan',
-            description: 'Car loan',
-            type: 'Expense',
-            amount: '- 4700',
-            month: 'January',
-            time: '11:20 AM'
-        },
-    ];
 
     const months = [
         { label: 'January', value: 'January' },
@@ -96,16 +34,22 @@ const TransactionsScreen = () => {
         { label: 'Expense', value: 'Expense' },
     ];
 
-    const flatListItem = (listData) => {
+    const filteredData = transactions.filter(item => {
+        const monthMatch = selectedMonth === 'Month' || item.month === selectedMonth;
+        const filterMatch = selectedFilter === 'All' || item.type === selectedFilter;
+        return monthMatch && filterMatch;
+    });
+
+    const flatListItem = ({ item }) => {
         return (
             <View style={styles.listItemViewContainer}>
                 <View style={styles.listItemDetailContainer}>
-                    <Text style={{ fontSize: 16, color: 'black' }}>{listData?.item?.category}</Text>
-                    <Text style={{ fontSize: 16, color: '#FD3C4A' }}>{listData?.item?.amount}</Text>
+                    <Text style={styles.categoryText}>{item.category}</Text>
+                    <Text style={styles.amountText}>{item.amount}</Text>
                 </View>
                 <View style={styles.listItemDetailContainer}>
-                    <Text style={{ fontSize: 13, color: '#91919F' }}>{listData?.item?.description}</Text>
-                    <Text style={{ fontSize: 13, color: '#91919F' }}>{listData?.item?.time}</Text>
+                    <Text style={styles.descriptionText}>{item.description}</Text>
+                    <Text style={styles.timeText}>{item.time}</Text>
                 </View>
             </View>
         )
@@ -119,7 +63,10 @@ const TransactionsScreen = () => {
                     value={selectedMonth}
                     items={months}
                     setOpen={setOpenMonth}
-                    setValue={setSelectedMonth}
+                    setValue={(callback) => {
+                        const value = callback(selectedMonth); // Using the callback to get the new value
+                        dispatch(setSelectedMonth(value));
+                    }}
                     containerStyle={styles.dropDownOptionContainer}
                     style={styles.dropDownPicker}
                     dropDownContainerStyle={styles.dropDownListContainer}
@@ -130,7 +77,10 @@ const TransactionsScreen = () => {
                     value={selectedFilter}
                     items={filters}
                     setOpen={setOpenFilter}
-                    setValue={setSelectedFilter}
+                    setValue={(callback) => {
+                        const value = callback(selectedFilter); // Using the callback to get the new value
+                        dispatch(setSelectedFilter(value));
+                    }}
                     containerStyle={styles.dropDownOptionContainer}
                     style={styles.dropDownPicker}
                     dropDownContainerStyle={styles.dropDownListContainer}
@@ -139,13 +89,12 @@ const TransactionsScreen = () => {
             </View>
             <View style={styles.listViewContainer}>
                 <FlatList
-                    data={listData}
+                    data={filteredData}
                     renderItem={flatListItem}
-                    keyExtractor={item => item.id}
+                    keyExtractor={item => item.id.toString()}
                 />
             </View>
         </View>
-
     )
 };
 
@@ -174,7 +123,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFF6E5',
         borderColor: 'black',
         borderRadius: 40
-      },
+    },
     dropDownListContainer: {
         borderRadius: 20,
         borderWidth: 1,
@@ -185,6 +134,7 @@ const styles = StyleSheet.create({
         height: Dimensions.get('window').height,
         width: Dimensions.get('window').width,
         marginTop: 20,
+        marginBottom: 80,
         paddingHorizontal: 8
     },
     listItemViewContainer: {
@@ -202,6 +152,22 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
+    },
+    categoryText: {
+        fontSize: 16,
+        color: 'black'
+    },
+    descriptionText: {
+        fontSize: 13,
+        color: '#91919F'
+    },
+    amountText: {
+        fontSize: 16,
+        color: '#FD3C4A'
+    },
+    timeText: {
+        fontSize: 13,
+        color: '#91919F'
     }
 });
 

@@ -2,29 +2,22 @@ import React from 'react';
 import { View, Text, StyleSheet, Dimensions, ScrollView } from 'react-native';
 import * as Progress from 'react-native-progress';
 
-const categories = [
-    { label: 'Shopping', value: 0.8, color: '#FCAC12', amount: '5120' },
-    { label: 'Subscription', value: 0.2, color: '#6A00FF', amount: '1280' },
-    { label: 'Food', value: 0.1, color: '#FD3C4A', amount: '532' },
-    { label: 'Grocery', value: 0.1, color: '#00A86B', amount: '412' }
-];
-
-const ProgressBarComponent = () => {
+const ProgressBarComponent = ({ transactions }) => {
     return (
         <ScrollView style={styles.container}>
-            {categories.map((category, index) => (
+            {transactions.map((transaction, index) => (
                 <View key={index} style={styles.progressBarContainer}>
                     <View style={styles.detailsContainer}>
                         <View style={styles.labelContainer}>
-                            <View style={[styles.circle, { backgroundColor: category.color }]} />
-                            <Text style={styles.label}>{category.label}</Text>
+                            <View style={[styles.circle, { backgroundColor: transaction.color }]} />
+                            <Text style={styles.label}>{transaction.category}</Text>
                         </View>
-                        <Text style={styles.amount}>- {category.amount}</Text>
+                        <Text style={styles.amount}>{transaction.amount}</Text>
                     </View>
                     <Progress.Bar
-                        progress={category.value}
+                        progress={parseFloat(transaction.amount.replace(/[^\d.-]/g, '')) / 10000}
                         width={Dimensions.get('window').width - 40}
-                        color={category.color}
+                        color={transaction.color}
                         unfilledColor="#F1F1FA"
                         borderWidth={0}
                         height={12}

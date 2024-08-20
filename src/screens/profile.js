@@ -1,49 +1,86 @@
-import React from "react";
-import { StyleSheet, Text, View, Dimensions, Image, TouchableOpacity } from "react-native";
+import React, { useState, useRef, useEffect } from "react";
+import { StyleSheet, Text, View, Dimensions, Image, TouchableOpacity, TextInput, Keyboard } from "react-native";
+import { useSelector, useDispatch } from 'react-redux';
+import { setUpdatedUsername } from "../redux/actions";
+import { logo, edit, account, settings, upload, logout } from '../utils/images';
 
-const ProfileScreen = () => {
+const ProfileScreen = ({ navigation }) => {
+
+    const inputRef = useRef(null);
+    const username = useSelector(state => state.username);
+    const [isEditable, setIsEditable] = useState(false);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (isEditable) {
+            inputRef.current.focus(); // Focus the TextInput when editing mode is enabled
+        }
+    }, [isEditable]);
+
+    const handleEditPress = () => {
+        setIsEditable(true);
+    };
+
+    const handleDonePress = () => {
+        Keyboard.dismiss();
+        setIsEditable(false);
+    };
+
+    const handleLogoutPress = () => {
+        navigation.navigate('MainScreen')
+    };
+
     return (
         <View style={styles.fullSreenBGContainer}>
             <View style={styles.userNameContainer}>
                 <View style={{ flex: 1 }}>
                     <View style={styles.userImageContainerBorder}>
                         <View style={styles.userImageContainer}>
-                            <Image source={require('../assets/icons/logo.png')} style={styles.userImage} />
+                            <Image source={logo} style={styles.userImage} />
                         </View>
                     </View>
                 </View>
-                <View style={{ flex: 1.5, flexDirection: 'column', alignItems: 'center' }}>
-                    <Text style={{ fontSize: 14, color: '#91919F' }}>Username</Text>
-                    <Text style={{ fontSize: 24, color: '#161719' }}>Kanupriya</Text>
+                <View style={[styles.usernameContainer, { flex: 1.5 }]}>
+                    <Text style={styles.usernameText}>Username</Text>
+                    <TextInput
+                        ref={inputRef}
+                        style={[styles.nameInput, { borderBottomWidth: isEditable ? 1 : 0 }]}
+                        value={username}
+                        onChangeText={(text) => dispatch(setUpdatedUsername(text))}
+                        editable={isEditable}
+                        keyboardType='default'
+                        returnKeyType="done"
+                        onSubmitEditing={handleDonePress}
+                    />
                 </View>
                 <View>
-                    <TouchableOpacity style={{ flex: 1, alignItems: 'center', padding: 20 }}>
-                        <Image source={require('../assets/icons/edit.png')} ></Image>
+                    <TouchableOpacity style={[styles.editContainer, { flex: 1 }]} onPress={handleEditPress}>
+                        <Image source={edit} ></Image>
                     </TouchableOpacity>
                 </View>
             </View>
             <View style={styles.flexContainer}>
                 <TouchableOpacity style={styles.flexColumns}>
                     <View style={styles.iconContainer}>
-                        <Image source={require('../assets/icons/account.png')} />
+                        <Image source={account} />
                     </View>
                     <Text style={styles.flexColumnsText}>Account</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.flexColumns}>
                     <View style={styles.iconContainer}>
-                        <Image source={require('../assets/icons/settings.png')} />
+                        <Image source={settings} />
                     </View>
                     <Text style={styles.flexColumnsText}>Settings</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.flexColumns}>
                     <View style={styles.iconContainer}>
-                        <Image source={require('../assets/icons/upload.png')} />
+                        <Image source={upload} />
                     </View>
                     <Text style={styles.flexColumnsText}>Export Data</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.flexColumns}>
+                <TouchableOpacity style={styles.flexColumns} onPress={handleLogoutPress}>
                     <View style={[styles.iconContainer, { backgroundColor: '#FFE2E4' }]}>
-                        <Image source={require('../assets/icons/logout.png')} />
+                        <Image source={logout} />
                     </View>
                     <Text style={styles.flexColumnsText}>Logout</Text>
                 </TouchableOpacity>
@@ -85,6 +122,25 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         resizeMode: 'cover'
+    },
+    usernameContainer: {
+        flexDirection: 'column',
+        alignItems: 'center'
+    },
+    usernameText: {
+        fontSize: 14,
+        color: '#91919F'
+    },
+    nameInput: {
+        fontSize: 24,
+        color: '#161719',
+        textAlign: 'center',
+
+        borderBottomColor: '#AD00FF',
+    },
+    editContainer: {
+        alignItems: 'center',
+        padding: 20
     },
     flexContainer: {
         flex: 1,
