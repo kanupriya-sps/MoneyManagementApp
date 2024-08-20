@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -9,6 +9,7 @@ import TransactionsScreen from './transactions';
 import AddTransactionScreen from './addTransaction';
 import StatiticsScreen from './statitics';
 import ProfileScreen from '../screens/profile';
+import { home, transaction, plus, user, pieChart } from '../utils/images';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -26,8 +27,8 @@ function TabNavigator() {
                     headerShown: false,
                     tabBarIcon: ({ focused }) => (
                         <Image
-                            source={require('../assets/icons/home.png')}
-                            style={{ width: 25, height: 25, tintColor: focused ? '#7F3DFF' : 'grey' }}
+                            source={home}
+                            style={[styles.tabbarIconImage, { tintColor: focused ? '#7F3DFF' : 'grey' }]}
                         />
                     )
                 }} />
@@ -39,8 +40,8 @@ function TabNavigator() {
                     },
                     tabBarIcon: ({ focused }) => (
                         <Image
-                            source={require('../assets/icons/transaction.png')}
-                            style={{ width: 25, height: 25, tintColor: focused ? '#7F3DFF' : 'grey' }}
+                            source={transaction}
+                            style={[styles.tabbarIconImage, { tintColor: focused ? '#7F3DFF' : 'grey' }]}
                         />
                     )
                 }} />
@@ -52,11 +53,11 @@ function TabNavigator() {
                         backgroundColor: '#FFF6E5',
                     },
                     tabBarIcon: ({ focused }) => (
-                        <View style={{height: 70, width: 70, borderRadius: 35, backgroundColor: '#A89696', justifyContent:'center' ,alignItems:'center'}}>
-                            <View style={{ height: 50, width: 50, borderRadius: 25, backgroundColor: '#7F3DFF',justifyContent:'center', alignItems:'center'}}>
+                        <View style={styles.addOuterContainer}>
+                            <View style={styles.addInnerContainer}>
                                 <Image
-                                    source={require('../assets/icons/plus.png')}
-                                    style={{ width: 25, height: 25, tintColor: focused ? 'white' : 'white', alignSelf: 'center' }}
+                                    source={plus}
+                                    style={[styles.addImage, { tintColor: focused ? 'white' : 'white' }]}
                                 />
                             </View>
                         </View>
@@ -71,8 +72,8 @@ function TabNavigator() {
                     tabBarLabel: 'Statitics',
                     tabBarIcon: ({ focused }) => (
                         <Image
-                            source={require('../assets/icons/pie-chart.png')}
-                            style={{ width: 25, height: 25, tintColor: focused ? '#7F3DFF' : 'grey' }}
+                            source={pieChart}
+                            style={[styles.tabbarIconImage, { tintColor: focused ? '#7F3DFF' : 'grey' }]}
                         />
                     )
                 }} />
@@ -84,8 +85,8 @@ function TabNavigator() {
                     },
                     tabBarIcon: ({ focused }) => (
                         <Image
-                            source={require('../assets/icons/user.png')}
-                            style={{ width: 25, height: 25, tintColor: focused ? '#7F3DFF' : 'grey' }}
+                            source={user}
+                            style={[styles.tabbarIconImage, { tintColor: focused ? '#7F3DFF' : 'grey' }]}
                         />
                     )
                 }} />
@@ -125,5 +126,33 @@ function Navigation() {
         </NavigationContainer>
     );
 }
+
+const styles = StyleSheet.create({
+    tabbarIconImage: {
+        width: 25,
+        height: 25,
+    },
+    addOuterContainer: {
+        height: 70,
+        width: 70,
+        borderRadius: 35,
+        backgroundColor: '#A89696',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    addInnerContainer: {
+        height: 50,
+        width: 50,
+        borderRadius: 25,
+        backgroundColor: '#7F3DFF',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    addImage: {
+        width: 25,
+        height: 25,
+        alignSelf: 'center'
+    }
+});
 
 export default Navigation;

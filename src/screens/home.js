@@ -1,103 +1,152 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Dimensions, Image, Text, ImageBackground, TouchableOpacity, FlatList } from "react-native";
+import { useSelector } from 'react-redux';
+import { homeBG, logo, arrowDown, incomeSq, arrowUp, expenseSq } from '../utils/images';
 
 const HomeScreen = ({ navigation }) => {
 
     const dataList = ['Today', 'Week', 'Month', 'Year'];
     const [selectedItem, setSelectedItem] = useState('Today');
+    const username = useSelector(state => state.username);
+    const currentDate = new Date();
+    const dateName = currentDate.toISOString().split('T')[0];
+    const monthName = currentDate.toLocaleString('en-US', { month: 'long' });
+    const dayName = currentDate.toLocaleString('en-US', { weekday: 'long' });
+    const yearName = currentDate.getFullYear();
+
+    const transactions = useSelector(state => state.transactions);
+    const [filteredTransactions, setFilteredTransactions] = useState([]);
 
     const onPressViewAll = () => {
         navigation.navigate('Transactions')
     }
-    const ListItem = ({ item }) => {
+
+    const FilterItem = ({ item }) => {
         const isSelected = item === selectedItem;
         return (
             <TouchableOpacity style={[styles.itemContainer, isSelected ? styles.selectedItem : null]}
-            onPress={() => setSelectedItem(item)}>
-                <Text style={{fontSize:14, color:'#FFFFFF'}}>{item}</Text>
+                onPress={() => setSelectedItem(item)}>
+                <Text style={styles.filteredItemText}>{item}</Text>
             </TouchableOpacity>
         )
     };
+
+    const filterTransactionsArray = () => {
+        switch (selectedItem) {
+            case 'Today':
+                return transactions.filter(item => item.date === dateName)
+            case 'Week':
+                const endDate = new Date();
+                const startDate = new Date();
+                endDate.setDate(currentDate.getDate() + 6);
+                startDate.setDate(currentDate.getDate() - 1)
+                return transactions.filter(item => {
+                    const transactionDate = new Date(item.date);
+                    return transactionDate >= startDate && transactionDate <= endDate;
+                });
+            case 'Month':
+                return transactions.filter(item => new Date(item.date).toLocaleString('en-US', { month: 'long' }) === monthName);
+            case 'Year':
+                return transactions.filter(item => new Date(item.date).getFullYear() === yearName);
+        }
+    };
+
+    useEffect(() => {
+        setFilteredTransactions(filterTransactionsArray());
+    }, [selectedItem, transactions]);
+
+    const renderTransactionItem = ({ item }) => {
+        const isIncome = item.type === 'Income';
+        const arrowStyle = isIncome
+            ? { transform: [{ rotate: '0deg' }], tintColor: 'green' } // Arrow pointing up (green)
+            : { transform: [{ rotate: '180deg' }], tintColor: 'red' };
+        return (
+            <View style={styles.singleTransactionContainer}>
+                <View style={[styles.transactionArrowImageContainer, { flex: 1.2 }]}>
+                    <Image source={require('../assets/icons/arrow-up.png')} style={[styles.transactionArrowImage, arrowStyle]} />
+                </View>
+                <Text style={{ flex: 5.5, fontSize: 22 }}>{`₹ ${item.amount.replace(/^[+-]\s*/, '')}`}</Text>
+                <Text style={{ flex: 2, fontSize: 15, color: '#767474' }}>{item.type}</Text>
+            </View>
+        );
+    };
+
+    const calculateTotals = (type) => {
+        return transactions
+            .filter(transaction => transaction.type === type)
+            .reduce((total, transaction) => {
+                const amount = parseFloat(transaction.amount.replace(/[^\d.-]/g, ''));
+                return type === 'Income' ? total + amount : total + Math.abs(amount);
+            }, 0)
+            .toFixed(2);
+    };
+
+    const totalIncome = calculateTotals('Income');
+    const totalExpense = calculateTotals('Expense');
+    const accountBalance = (totalIncome - totalExpense).toFixed(2);
+
     return (
         <View style={styles.fullScreenContainer}>
             <View style={styles.imageContainer}>
-                <ImageBackground source={require('../assets/icons/home-bg.png')} style={styles.bgImage}>
+                <ImageBackground source={homeBG} style={styles.bgImage}>
                     <View style={styles.detailContainer}>
                         <View style={{ flex: 4 }}>
-                            <Text style={{ fontSize: 15 }}>MONDAY 9{'\n'}NOVEMBER</Text>
+                            <Text style={{ fontSize: 15 }}>{dayName.toUpperCase()} {currentDate.getDate()}{'\n'}{monthName.toUpperCase()}</Text>
                         </View>
                         <View style={{ flex: 1 }}>
                             <View style={styles.userImageContainerBorder}>
                                 <View style={styles.userImageContainer}>
-                                    <Image source={require('../assets/icons/logo.png')} style={styles.userImage} />
+                                    <Image source={logo} style={styles.userImage} />
                                 </View>
                             </View>
                         </View>
-                        <View style={{ flex: 2, paddingTop: 12 }}>
-                            <Text style={{ fontSize: 15 }}>KANUPRIYA</Text>
+                        <View style={styles.usernameContainer}>
+                            <Text style={{ fontSize: 15 }}>{username.toUpperCase()}</Text>
                         </View>
                     </View>
                     <View style={styles.dividingLineContainer} />
                     <View style={styles.amountContainer}>
-                        <Text style={{ fontSize: 14, color: '#91919F', alignSelf: 'center' }}>Account Balance</Text>
-                        <Text style={{ fontSize: 40, color: '#black', fontWeight: 'bold', marginTop: 20 }}>9400.0</Text>
+                        <Text style={styles.amountHeadingText}>Account Balance</Text>
+                        <Text style={styles.amountText}>{accountBalance}</Text>
                     </View>
                     <View style={styles.buttonContainer}>
                         <View style={styles.incomeContainer}>
                             <View style={styles.iconContainer}>
-                                <Image source={require('../assets/icons/arrow-down.png')} style={{ height: 10, width: 11 }} />
-                                <Image source={require('../assets/icons/income-sq.png')} style={{ height: 16, width: 24 }} />
+                                <Image source={arrowDown} style={styles.iconImageUp} />
+                                <Image source={incomeSq} style={styles.iconImageDown} />
                             </View>
-                            <Text style={{ fontSize: 17, color: 'white' }}>Income{'\n'}25000</Text>
+                            <Text style={styles.buttonText}>Income{'\n'}{totalIncome}</Text>
                         </View>
                         <View style={styles.expensesContainer}>
                             <View style={styles.iconContainer}>
-                                <Image source={require('../assets/icons/arrow-up.png')} style={{ height: 10, width: 11 }} />
-                                <Image source={require('../assets/icons/expense-sq.png')} style={{ height: 16, width: 24 }} />
+                                <Image source={arrowUp} style={styles.iconImageUp} />
+                                <Image source={expenseSq} style={styles.iconImageDown} />
                             </View>
-                            <Text style={{ fontSize: 17, color: 'white' }}>Expenses{'\n'}11200</Text>
+                            <Text style={styles.buttonText}>Expenses{'\n'}{totalExpense}</Text>
                         </View>
                     </View>
                 </ImageBackground>
             </View>
             <View style={styles.timeContainer}>
-            <FlatList
+                <FlatList
                     data={dataList}
-                    renderItem={ListItem}
+                    renderItem={FilterItem}
                     keyExtractor={(item, index) => index.toString()}
                     horizontal={true}
                 />
             </View>
             <View style={styles.transactionHeadingContainer}>
-                <Text style={{ fontSize: 14, fontFamily: 'Inter' }}>Recent Transaction</Text>
+                <Text style={styles.transactionHeadingText}>Recent Transaction</Text>
                 <TouchableOpacity onPress={() => onPressViewAll()}>
-                    <Text style={{ fontSize: 14, fontFamily: 'Inter' }}>View All</Text>
+                    <Text style={styles.transactionHeadingText}>View All</Text>
                 </TouchableOpacity>
             </View>
-            {/* need to change this to 1 component and use multiple times */}
-            <View style={styles.transactionsContainer}>
-                <View style={styles.singleTransactionContainer}>
-                    <View style={{ flex: 1.2, height: 40, width: 40, borderRadius: 20, backgroundColor: '#FFF6E5', justifyContent: 'center', alignItems: 'center', marginLeft: 10 }}>
-                        <Image source={require('../assets/icons/arrow-down.png')} style={styles.transactionArrowImage} />
-                    </View>
-                    <Text style={{ flex: 5.5, fontSize: 22 }}>₹ 15000</Text>
-                    <Text style={{ flex: 2, fontSize: 15, color: '#767474' }}>Income</Text>
-                </View>
-                <View style={styles.singleTransactionContainer}>
-                    <View style={{ flex: 1.2, height: 40, width: 40, borderRadius: 20, backgroundColor: '#FFF6E5', justifyContent: 'center', alignItems: 'center', marginLeft: 10 }}>
-                        <Image source={require('../assets/icons/arrow-up.png')} style={styles.transactionArrowImage} />
-                    </View>
-                    <Text style={{ flex: 5.5, fontSize: 22 }}>₹ 6500</Text>
-                    <Text style={{ flex: 2, fontSize: 15, color: '#767474' }}>Food</Text>
-                </View>
-                <View style={styles.singleTransactionContainer}>
-                    <View style={{ flex: 1.2, height: 40, width: 40, borderRadius: 20, backgroundColor: '#FFF6E5', justifyContent: 'center', alignItems: 'center', marginLeft: 10 }}>
-                        <Image source={require('../assets/icons/arrow-down.png')} style={styles.transactionArrowImage} />
-                    </View>
-                    <Text style={{ flex: 5.5, fontSize: 22 }}>₹ 28000</Text>
-                    <Text style={{ flex: 2, fontSize: 15, color: '#767474' }}>Income</Text>
-                </View>
-            </View>
+            <FlatList
+                data={filteredTransactions.slice(0, 3)}
+                renderItem={renderTransactionItem}
+                keyExtractor={(item) => item.id.toString()}
+                style={styles.transactionsContainer}
+            />
         </View>
     );
 };
@@ -128,7 +177,6 @@ const styles = StyleSheet.create({
         marginTop: 70,
         marginLeft: 30,
         marginRight: 30
-        // backgroundColor: 'white'
     },
     userImageContainerBorder: {
         height: 42,
@@ -151,9 +199,12 @@ const styles = StyleSheet.create({
         height: '100%',
         resizeMode: 'cover'
     },
+    usernameContainer: {
+        flex: 2,
+        paddingTop: 12
+    },
     dividingLineContainer: {
         height: 1,
-        // width: 335,
         marginLeft: 12,
         marginRight: 12,
         backgroundColor: '#525252'
@@ -161,6 +212,17 @@ const styles = StyleSheet.create({
     amountContainer: {
         padding: 30,
         alignSelf: 'center'
+    },
+    amountHeadingText: {
+        fontSize: 14,
+        color: '#91919F',
+        alignSelf: 'center'
+    },
+    amountText: {
+        fontSize: 40,
+        color: '#black',
+        fontWeight: 'bold',
+        marginTop: 20
     },
     buttonContainer: {
         flexDirection: 'row',
@@ -197,6 +259,18 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    iconImageUp: {
+        height: 10,
+        width: 11
+    },
+    iconImageDown: {
+        height: 16,
+        width: 24
+    },
+    buttonText: {
+        fontSize: 17,
+        color: 'white'
+    },
     timeContainer: {
         borderWidth: 1,
         borderColor: 'white',
@@ -208,7 +282,6 @@ const styles = StyleSheet.create({
     },
     itemContainer: {
         height: 34,
-        //backgroundColor: 'black',
         justifyContent: 'center',
         borderRadius: 16,
         paddingVertical: 8,
@@ -223,30 +296,45 @@ const styles = StyleSheet.create({
         padding: 20,
         marginTop: 15
     },
+    transactionHeadingText: {
+        fontSize: 14,
+        fontFamily: 'Inter'
+    },
     transactionsContainer: {
         marginTop: 10,
         flexDirection: 'column',
-        justifyContent: 'center',
         rowGap: 18,
-        //padding: 10,
     },
     singleTransactionContainer: {
         height: 54,
         marginLeft: 16,
         marginRight: 16,
-        marginTop: 0,
-        backgroundColor: '#c1b7b7', //'#D9D9D9',
+        backgroundColor: '#c1b7b7',
         borderRadius: 5,
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
+        marginBottom: 20,
         columnGap: 10
+    },
+    transactionArrowImageContainer: {
+        height: 40,
+        width: 40,
+        borderRadius: 20,
+        backgroundColor: '#FFF6E5',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: 10
     },
     transactionArrowImage: {
         width: '50%',
         height: '50%',
-        resizeMode: 'stretch',
+        resizeMode: 'contain',
         transform: [{ rotate: '180deg' }]
+    },
+    filteredItemText: {
+        fontSize: 14,
+        color: '#FFFFFF'
     }
 });
 
