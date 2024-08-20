@@ -1,21 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, View, Dimensions, Image, Text, ImageBackground, TouchableOpacity, FlatList } from "react-native";
 
 const HomeScreen = ({ navigation }) => {
 
     const dataList = ['Today', 'Week', 'Month', 'Year'];
+    const [selectedItem, setSelectedItem] = useState('Today');
 
     const onPressViewAll = () => {
         navigation.navigate('Transactions')
     }
     const ListItem = ({ item }) => {
+        const isSelected = item === selectedItem;
         return (
-            <TouchableOpacity style={styles.itemContainer}>
+            <TouchableOpacity style={[styles.itemContainer, isSelected ? styles.selectedItem : null]}
+            onPress={() => setSelectedItem(item)}>
                 <Text style={{fontSize:14, color:'#FFFFFF'}}>{item}</Text>
             </TouchableOpacity>
         )
     };
-
     return (
         <View style={styles.fullScreenContainer}>
             <View style={styles.imageContainer}>
@@ -72,6 +74,7 @@ const HomeScreen = ({ navigation }) => {
                     <Text style={{ fontSize: 14, fontFamily: 'Inter' }}>View All</Text>
                 </TouchableOpacity>
             </View>
+            {/* need to change this to 1 component and use multiple times */}
             <View style={styles.transactionsContainer}>
                 <View style={styles.singleTransactionContainer}>
                     <View style={{ flex: 1.2, height: 40, width: 40, borderRadius: 20, backgroundColor: '#FFF6E5', justifyContent: 'center', alignItems: 'center', marginLeft: 10 }}>
@@ -205,11 +208,14 @@ const styles = StyleSheet.create({
     },
     itemContainer: {
         height: 34,
-        backgroundColor: 'black',
+        //backgroundColor: 'black',
         justifyContent: 'center',
         borderRadius: 16,
         paddingVertical: 8,
         paddingHorizontal: 24
+    },
+    selectedItem: {
+        backgroundColor: 'black',
     },
     transactionHeadingContainer: {
         flexDirection: 'row',

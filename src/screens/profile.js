@@ -23,30 +23,30 @@ const ProfileScreen = () => {
                 </View>
             </View>
             <View style={styles.flexContainer}>
-                <View style={styles.flexColumns}>
+                <TouchableOpacity style={styles.flexColumns}>
                     <View style={styles.iconContainer}>
                         <Image source={require('../assets/icons/account.png')} />
                     </View>
                     <Text style={styles.flexColumnsText}>Account</Text>
-                </View>
-                <View style={styles.flexColumns}>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.flexColumns}>
                     <View style={styles.iconContainer}>
                         <Image source={require('../assets/icons/settings.png')} />
                     </View>
                     <Text style={styles.flexColumnsText}>Settings</Text>
-                </View>
-                <View style={styles.flexColumns}>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.flexColumns}>
                     <View style={styles.iconContainer}>
                         <Image source={require('../assets/icons/upload.png')} />
                     </View>
                     <Text style={styles.flexColumnsText}>Export Data</Text>
-                </View>
-                <View style={styles.flexColumns}>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.flexColumns}>
                     <View style={[styles.iconContainer, { backgroundColor: '#FFE2E4' }]}>
                         <Image source={require('../assets/icons/logout.png')} />
                     </View>
                     <Text style={styles.flexColumnsText}>Logout</Text>
-                </View>
+                </TouchableOpacity>
             </View>
         </View>
     );

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet, Dimensions, TouchableOpacity, Image, Modal } from "react-native";
+import { Text, View, StyleSheet, Dimensions, TouchableOpacity, Modal, TextInput , Keyboard} from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
-import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
+import { Calendar } from 'react-native-calendars';
 
 const AddTransactionScreen = () => {
 
@@ -11,6 +11,9 @@ const AddTransactionScreen = () => {
     const [openDescription, setOpenDescription] = useState(false);
     const [selectedDate, setSelectedDate] = useState('Pick your date');
     const [isCalendarVisible, setIsCalendarVisible] = useState(false);
+    const [transactionType, setTransactionType] = useState(null);
+    const [amount, setAmount] = useState('');
+    const [isFocused, setIsFocused] = useState(false);
 
     const categories = [
         { label: 'Salary', value: 'Salary' },
@@ -28,12 +31,35 @@ const AddTransactionScreen = () => {
         { label: 'Subscription', value: 'Subscription' },
         { label: 'Shopping', value: 'Shopping' },
     ];
+    const handleContinue = () => {
+        const transactionData = {
+            category: selectedCategory,
+            description: selectedDescription,
+            date: selectedDate,
+            type: transactionType,
+        };
+        console.log("transactionData" ,transactionData); // You can store this object or send it to a backend service
+    };
 
     return (
         <View style={styles.fullSreenBGContainer}>
+            {/* need to make this text input */}
             <View style={styles.amountContainer}>
                 <Text style={{ fontSize: 18, paddingHorizontal: 40, marginTop: 70 }}>How much?</Text>
-                <Text style={{ fontSize: 40, fontWeight: '600', paddingHorizontal: 40, marginTop: 10 }}>₹ 66580</Text>
+                {!isFocused && !amount && (
+                    <Text style={styles.placeholderText}>Enter amount</Text>
+                )}
+                <TextInput
+                    style={styles.amountInput}
+                    //placeholder="Enter amount"
+                    value={amount}
+                    onChangeText={setAmount}
+                    keyboardType="numeric"
+                    returnKeyType="done" 
+                    onSubmitEditing={Keyboard.dismiss} 
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={() => setIsFocused(false)}
+                />
             </View>
             <View style={styles.flexContainer}>
                 <DropDownPicker
@@ -63,10 +89,12 @@ const AddTransactionScreen = () => {
                     zIndexInverse={2000}
                 />
                 <View style={styles.flexColumnsWithButton}>
-                    <TouchableOpacity style={{ backgroundColor: '#00A86B', borderRadius: 14, width: 80 }}>
+                    <TouchableOpacity style={{ backgroundColor: '#00A86B', borderRadius: 14, width: 80 }}
+                        onPress={() => setTransactionType('Income')}>
                         <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#FFFFFF', padding: 5, alignSelf: 'center' }}>Income</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{ backgroundColor: '#FD3C4A', borderRadius: 14, width: 80 }}>
+                    <TouchableOpacity style={{ backgroundColor: '#FD3C4A', borderRadius: 14, width: 80 }}
+                        onPress={() => setTransactionType('Expense')}>
                         <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#FFFFFF', padding: 5, alignSelf: 'center' }}>Expense</Text>
                     </TouchableOpacity>
                 </View>
@@ -101,7 +129,7 @@ const AddTransactionScreen = () => {
                     </Modal>
                 )}
             </View>
-            <TouchableOpacity style={styles.continueButton}>
+            <TouchableOpacity style={styles.continueButton} onPress={handleContinue}>
                 <Text style={{ fontSize: 18, fontWeight: '600', color: '#FCFCFC', alignSelf: 'center' }}>Continue</Text>
             </TouchableOpacity>
         </View>
@@ -117,6 +145,20 @@ const styles = StyleSheet.create({
     amountContainer: {
         height: 150,
         width: Dimensions.get('window').width,
+    },
+    placeholderText: {
+        fontSize: 14,  // Smaller size for placeholder
+        color: '#91919F',
+        position: 'absolute',
+        paddingHorizontal: 40,
+        marginTop: 110,
+    },
+    amountInput: {
+        fontSize: 40,
+        fontWeight: '600',
+        paddingHorizontal: 40,
+        marginTop: 10,
+        color: 'black',
     },
     flexContainer: {
         zIndex: 1,

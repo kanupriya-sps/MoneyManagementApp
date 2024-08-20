@@ -1,22 +1,79 @@
 import React, { useState } from "react";
 import { Text, View, StyleSheet, Dimensions, TouchableOpacity, Image } from "react-native";
+import PieChart from 'react-native-pie-chart';
+import ProgressBarComponent from "../components/ProgressBarComponent";
+import DropDownPicker from 'react-native-dropdown-picker';
 
 const StatiticsScreen = () => {
 
     const [activeButton, setActiveButton] = useState('Expense');
+    const [selectedMonth, setSelectedMonth] = useState('Month');
+    const [openMonth, setOpenMonth] = useState(false);
+
+    const data = [60, 25, 10, 10];
+    const colors = [ '#FCAC12','#7F3DFF', '#FD3C4A', '#00A86B'];
+    const totalAmount = 9400.0;
 
     const handlePress = (button) => {
         setActiveButton(button);
     };
+    const dataItems = [
+        {
+            id: 1,
+            category: 'Shopping',
+            amount: '- 5120',
+            color: '#FCAC12'
+        },
+        {
+            id: 2,
+            category: 'Subsription',
+            amount: '- 1280',
+            color: '#7F3DFF'
+        },
+        {
+            id: 3,
+            category: 'Food',
+            amount: '- 532',
+            color: '#FD3C4A'
+        },
+    ];
+    const months = [
+        { label: 'January', value: 'January' },
+        { label: 'February', value: 'February' },
+        { label: 'March', value: 'March' },
+        { label: 'April', value: 'April' },
+        { label: 'May', value: 'May' },
+        { label: 'June', value: 'June' },
+        { label: 'July', value: 'July' },
+        { label: 'August', value: 'August' },
+        { label: 'September', value: 'September' },
+        { label: 'October', value: 'October' },
+        { label: 'November', value: 'November' },
+        { label: 'December', value: 'December' },
+    ];
 
     return (
         <View style={styles.fullSreenBGContainer}>
-            <TouchableOpacity style={styles.monthContainer}>
-                <Image source={require('../assets/icons/down-arrow.png')} style={styles.dropDownArrowImage} ></Image>
-                <Text style={{ fontSize: 14, color: '#212325' }}>Month</Text>
-            </TouchableOpacity>
+            <DropDownPicker
+                    open={openMonth}
+                    value={selectedMonth}
+                    items={months}
+                    setOpen={setOpenMonth}
+                    setValue={setSelectedMonth}
+                    containerStyle={styles.dropDownOptionContainer}
+                    style={styles.dropDownPicker}
+                    dropDownContainerStyle={styles.dropDownListContainer}
+                    placeholder="Month"
+                />
             <View style={styles.pieContainer}>
-                <Text style={{ fontSize: 25, fontWeight: '700' }}>₹ 9400.0</Text>
+                <PieChart
+                    widthAndHeight={190}
+                    series={data}
+                    sliceColor={colors}
+                    coverRadius={0.7}
+                    coverFill={'#FFF6E5'}
+                />
+                <Text style={{ fontSize: 25, fontWeight: '700', position: 'absolute' }}>₹ {totalAmount}</Text>
             </View>
             <View style={styles.segmentContainer}>
                 <TouchableOpacity
@@ -44,6 +101,9 @@ const StatiticsScreen = () => {
                         ]} >Income</Text>
                 </TouchableOpacity>
             </View>
+            <View style={{marginTop: 20}}>
+                    <ProgressBarComponent />
+                </View>
         </View>
     )
 };
@@ -54,34 +114,35 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width,
         backgroundColor: '#FFF6E5'
     },
-    monthContainer: {
+    dropDownOptionContainer: {
         height: 40,
-        width: 96,
+        width: 150,
         borderRadius: 40,
         borderWidth: 1,
         borderColor: '#F1F1FA',
-        marginTop: 60,
+        marginTop: 45,
         alignSelf: 'center',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center'
     },
-    dropDownArrowImage: {
-        height: '15%',
-        width: '15%',
-        resizeMode: 'stretch',
-        marginRight: 10
+    dropDownPicker: {
+        backgroundColor: '#FFF6E5',
+        borderColor: '#F1F1FA',
+        borderRadius: 40
+      },
+    dropDownListContainer: {
+        borderRadius: 20,
+        borderWidth: 1,
+        borderColor: '#F1F1FA',
+        backgroundColor: '#FFF6E5' //rgba(255, 255, 255, 1)',
     },
     pieContainer: {
         height: 190,
         width: 190,
         borderRadius: 95,
         marginTop: 30,
-        borderWidth: 24,
-        borderColor: '#FCAC12',
         alignSelf: 'center',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        position: 'relative'
     },
     segmentContainer: {
         height: 60,
@@ -116,7 +177,17 @@ const styles = StyleSheet.create({
     },
     inactiveText: {
         color: 'black'
-    }
+    },
+    listItemViewContainer: {
+        height: 50,
+        marginHorizontal: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+    },
+    progressBar: {
+        marginHorizontal: 10,
+    },
 });
 
 export default StatiticsScreen;
