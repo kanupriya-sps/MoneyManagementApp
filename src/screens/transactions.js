@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
         zIndex: 1000,
     },
     dropDownOptionContainer: {
-        width: 120,
+        width: 125,
         borderRadius: 40,
         borderColor: 'black'
     },

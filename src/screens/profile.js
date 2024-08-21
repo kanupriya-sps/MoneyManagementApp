@@ -51,6 +51,7 @@ const ProfileScreen = ({ navigation }) => {
                         keyboardType='default'
                         returnKeyType="done"
                         onSubmitEditing={handleDonePress}
+                        maxLength={20}
                     />
                 </View>
                 <View>

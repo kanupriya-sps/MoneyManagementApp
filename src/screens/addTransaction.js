@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet, Dimensions, TouchableOpacity, Modal, TextInput, Keyboard } from "react-native";
+import { Text, View, StyleSheet, Dimensions, TouchableOpacity, Modal, TextInput, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { useDispatch } from 'react-redux';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Calendar } from 'react-native-calendars';
@@ -62,9 +62,35 @@ const AddTransactionScreen = () => {
         // Navigate to Transactions screen
         navigation.navigate('TransactionsScreen');
     };
+
+    const isFormValid = () => {
+        return (
+            selectedCategory !== null &&
+            selectedDescription !== null &&
+            selectedDate !== null &&
+            transactionType !== null &&
+            amount !== ''
+        );
+    };
+
+    const handleCategoryOpen = () => {
+        setOpenCategory(true);
+        setOpenDescription(false);
+    };
+
+    const handleDescriptionOpen = () => {
+        setOpenDescription(true);
+        setOpenCategory(false);
+    };
+
+    const handleTouchOutside = () => {
+        Keyboard.dismiss(); // Dismiss the keyboard
+        setIsFocused(false); // Reset focus state
+    };
+
     return (
+        <TouchableWithoutFeedback onPress={handleTouchOutside}>
         <View style={styles.fullSreenBGContainer}>
-            {/* need to make this text input */}
             <View style={styles.amountContainer}>
                 <Text style={styles.amountContainerHeadingText}>How much?</Text>
                 {!isFocused && !amount && (
@@ -93,8 +119,10 @@ const AddTransactionScreen = () => {
                     style={styles.flexColumnsPicker}
                     dropDownContainerStyle={styles.dropDownListContainer}
                     placeholder="Category"
+                    onOpen={handleCategoryOpen}
                     zIndex={3000}
                     zIndexInverse={1000}
+                   
                 />
                 <DropDownPicker
                     open={openDescription}
@@ -106,8 +134,10 @@ const AddTransactionScreen = () => {
                     style={styles.flexColumnsPicker}
                     dropDownContainerStyle={styles.dropDownListContainer}
                     placeholder="Description"
+                    onOpen={handleDescriptionOpen}
                     zIndex={2000}
                     zIndexInverse={2000}
+                   
                 />
                 <View style={styles.flexColumnsWithButton}>
                     <TouchableOpacity style={styles.incomeButton}
@@ -150,10 +180,13 @@ const AddTransactionScreen = () => {
                     </Modal>
                 )}
             </View>
-            <TouchableOpacity style={styles.continueButton} onPress={handleSubmit}>
+            <TouchableOpacity style={[styles.continueButton, !isFormValid() && styles.disabledButton]}
+                onPress={handleSubmit}
+                disabled={!isFormValid()}>
                 <Text style={styles.continueButtonText}>Continue</Text>
             </TouchableOpacity>
         </View>
+        </TouchableWithoutFeedback>
     );
 }
 
@@ -302,7 +335,17 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         color: '#FCFCFC',
         alignSelf: 'center'
-    }
+    },
+    disabledButton: {
+        height: 50,
+        borderRadius: 16,
+        marginHorizontal: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#b18aff',
+        marginTop: 40,
+        marginBottom: 250
+    },
 })
 
 export default AddTransactionScreen;
