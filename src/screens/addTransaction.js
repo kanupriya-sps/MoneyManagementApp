@@ -90,102 +90,104 @@ const AddTransactionScreen = () => {
 
     return (
         <TouchableWithoutFeedback onPress={handleTouchOutside}>
-        <View style={styles.fullSreenBGContainer}>
-            <View style={styles.amountContainer}>
-                <Text style={styles.amountContainerHeadingText}>How much?</Text>
-                {!isFocused && !amount && (
-                    <Text style={styles.placeholderText}>Enter amount</Text>
-                )}
-                <TextInput
-                    style={styles.amountInput}
-                    //placeholder="Enter amount"
-                    value={amount}
-                    onChangeText={setAmount}
-                    keyboardType="numeric"
-                    returnKeyType="done"
-                    onSubmitEditing={Keyboard.dismiss}
-                    onFocus={() => setIsFocused(true)}
-                    onBlur={() => setIsFocused(false)}
-                />
-            </View>
-            <View style={styles.flexContainer}>
-                <DropDownPicker
-                    open={openCategory}
-                    value={selectedCategory}
-                    items={categories}
-                    setOpen={setOpenCategory}
-                    setValue={setSelectedCategory}
-                    containerStyle={styles.flexColumns}
-                    style={styles.flexColumnsPicker}
-                    dropDownContainerStyle={styles.dropDownListContainer}
-                    placeholder="Category"
-                    onOpen={handleCategoryOpen}
-                    zIndex={3000}
-                    zIndexInverse={1000}
-                   
-                />
-                <DropDownPicker
-                    open={openDescription}
-                    value={selectedDescription}
-                    items={descriptions}
-                    setOpen={setOpenDescription}
-                    setValue={setSelectedDescription}
-                    containerStyle={styles.flexColumns}
-                    style={styles.flexColumnsPicker}
-                    dropDownContainerStyle={styles.dropDownListContainer}
-                    placeholder="Description"
-                    onOpen={handleDescriptionOpen}
-                    zIndex={2000}
-                    zIndexInverse={2000}
-                   
-                />
-                <View style={styles.flexColumnsWithButton}>
-                    <TouchableOpacity style={styles.incomeButton}
-                        onPress={() => setTransactionType('Income')}>
-                        <Text style={styles.incomeButtonText}>Income</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.expenseButton}
-                        onPress={() => setTransactionType('Expense')}>
-                        <Text style={styles.expenseButtonText}>Expense</Text>
-                    </TouchableOpacity>
-                </View>
-                <TouchableOpacity style={styles.dateContainer} onPress={() => setIsCalendarVisible(!isCalendarVisible)}>
-                    {selectedDate == null ? (
-                        <Text style={styles.dateText}>Pick Your Date</Text>
-                    ) : (
-                        <Text style={styles.dateText}>{selectedDate}</Text>
+            <View style={styles.fullSreenBGContainer}>
+                <View style={styles.amountContainer}>
+                    <Text style={styles.amountContainerHeadingText}>How much?</Text>
+                    {!isFocused && !amount && (
+                        <Text style={styles.placeholderText}>Enter amount</Text>
                     )}
-                </TouchableOpacity>
-                {isCalendarVisible && (
-                    <Modal
-                        transparent={true}
-                        animationType="slide"
-                        visible={isCalendarVisible}
-                        onRequestClose={() => setIsCalendarVisible(false)}
-                    >
-                        <View style={styles.modalContainer}>
-                            <View style={styles.calendarContainer}>
-                                <Calendar
-                                    onDayPress={day => {
-                                        setIsCalendarVisible(false);
-                                        setSelectedDate(day.dateString);
-                                    }}
-                                    style={styles.calendar}
-                                />
-                                <TouchableOpacity onPress={() => setIsCalendarVisible(false)} style={styles.closeButton}>
-                                    <Text style={{ color: 'white' }}>Close</Text>
-                                </TouchableOpacity>
+                    <TextInput
+                        style={styles.amountInput}
+                        //placeholder="Enter amount"
+                        value={amount}
+                        onChangeText={setAmount}
+                        keyboardType="numeric"
+                        returnKeyType="done"
+                        onSubmitEditing={Keyboard.dismiss}
+                        onFocus={() => setIsFocused(true)}
+                        onBlur={() => setIsFocused(false)}
+                    />
+                </View>
+                <View style={styles.flexContainer}>
+                    <DropDownPicker
+                        open={openCategory}
+                        value={selectedCategory}
+                        items={categories}
+                        setOpen={setOpenCategory}
+                        setValue={setSelectedCategory}
+                        containerStyle={styles.flexColumns}
+                        style={styles.flexColumnsPicker}
+                        dropDownContainerStyle={styles.dropDownListContainer}
+                        placeholder="Category"
+                        onOpen={handleCategoryOpen}
+                        zIndex={3000}
+                        zIndexInverse={1000}
+
+                    />
+                    <DropDownPicker
+                        open={openDescription}
+                        value={selectedDescription}
+                        items={descriptions}
+                        setOpen={setOpenDescription}
+                        setValue={setSelectedDescription}
+                        containerStyle={styles.flexColumns}
+                        style={styles.flexColumnsPicker}
+                        dropDownContainerStyle={styles.dropDownListContainer}
+                        placeholder="Description"
+                        onOpen={handleDescriptionOpen}
+                        zIndex={2000}
+                        zIndexInverse={2000}
+
+                    />
+                    <View style={styles.flexColumnsWithButton}>
+                        <TouchableOpacity
+                            style={[styles.incomeButton, transactionType === 'Income' && styles.incomeButtonActive]}
+                            onPress={() => setTransactionType('Income')}>
+                            <Text style={styles.incomeButtonText}>Income</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[styles.expenseButton, transactionType === 'Expense' && styles.expenseButtonActive]}
+                            onPress={() => setTransactionType('Expense')}>
+                            <Text style={styles.expenseButtonText}>Expense</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <TouchableOpacity style={styles.dateContainer} onPress={() => setIsCalendarVisible(!isCalendarVisible)}>
+                        {selectedDate == null ? (
+                            <Text style={styles.dateText}>Pick Your Date</Text>
+                        ) : (
+                            <Text style={styles.dateText}>{selectedDate}</Text>
+                        )}
+                    </TouchableOpacity>
+                    {isCalendarVisible && (
+                        <Modal
+                            transparent={true}
+                            animationType="slide"
+                            visible={isCalendarVisible}
+                            onRequestClose={() => setIsCalendarVisible(false)}
+                        >
+                            <View style={styles.modalContainer}>
+                                <View style={styles.calendarContainer}>
+                                    <Calendar
+                                        onDayPress={day => {
+                                            setIsCalendarVisible(false);
+                                            setSelectedDate(day.dateString);
+                                        }}
+                                        style={styles.calendar}
+                                    />
+                                    <TouchableOpacity onPress={() => setIsCalendarVisible(false)} style={styles.closeButton}>
+                                        <Text style={{ color: 'white' }}>Close</Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
-                        </View>
-                    </Modal>
-                )}
+                        </Modal>
+                    )}
+                </View>
+                <TouchableOpacity style={[styles.continueButton, !isFormValid() && styles.disabledButton]}
+                    onPress={handleSubmit}
+                    disabled={!isFormValid()}>
+                    <Text style={styles.continueButtonText}>Continue</Text>
+                </TouchableOpacity>
             </View>
-            <TouchableOpacity style={[styles.continueButton, !isFormValid() && styles.disabledButton]}
-                onPress={handleSubmit}
-                disabled={!isFormValid()}>
-                <Text style={styles.continueButtonText}>Continue</Text>
-            </TouchableOpacity>
-        </View>
         </TouchableWithoutFeedback>
     );
 }
@@ -264,6 +266,9 @@ const styles = StyleSheet.create({
         borderRadius: 14,
         width: 80
     },
+    incomeButtonActive: {
+        backgroundColor: '#00291a', // dark Green for income
+    },
     incomeButtonText: {
         fontSize: 14,
         fontWeight: 'bold',
@@ -275,6 +280,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#FD3C4A',
         borderRadius: 14,
         width: 80
+    },
+    expenseButtonActive: {
+        backgroundColor: '#520107', // dark Red for expense
     },
     expenseButtonText: {
         fontSize: 14,

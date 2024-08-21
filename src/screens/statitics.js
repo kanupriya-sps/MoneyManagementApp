@@ -109,7 +109,7 @@ const StatiticsScreen = () => {
                 <TouchableOpacity
                     style={[
                         styles.segmentButtons,
-                        activeButton === 'Expense' ? styles.activeButton : styles.inactiveButton
+                        activeButton === 'Expense' ? styles.activeExpenseButton : styles.inactiveButton
                     ]}
                     onPress={() => handlePress('Expense')}>
                     <Text
@@ -121,7 +121,7 @@ const StatiticsScreen = () => {
                 <TouchableOpacity
                     style={[
                         styles.segmentButtons,
-                        activeButton === 'Income' ? styles.activeButton : styles.inactiveButton
+                        activeButton === 'Income' ? styles.activeIncomeButton : styles.inactiveButton
                     ]}
                     onPress={() => handlePress('Income')}>
                     <Text
@@ -197,8 +197,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    activeButton: {
+    activeExpenseButton: {
         backgroundColor: '#FD3C4A'
+    },
+    activeIncomeButton: {
+        backgroundColor: '#00A86B'
     },
     inactiveButton: {
         backgroundColor: '#FFFEFE'
