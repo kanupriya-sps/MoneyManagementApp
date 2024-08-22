@@ -87,11 +87,17 @@ const TransactionsScreen = () => {
                 />
             </View>
             <View style={styles.listViewContainer}>
-                <FlatList
-                    data={filteredData}
-                    renderItem={flatListItem}
-                    keyExtractor={item => item.id.toString()}
-                />
+                {filteredData.length > 0 ? (
+                    <FlatList
+                        data={filteredData}
+                        renderItem={flatListItem}
+                        keyExtractor={item => item.id.toString()}
+                    />
+                ) : (
+                    <View style={styles.noDataView}>
+                        <Text style={styles.noDataText}>No transactions found for {selectedMonth}.</Text>
+                    </View>
+                )}
             </View>
         </View>
     )
@@ -167,6 +173,15 @@ const styles = StyleSheet.create({
     timeText: {
         fontSize: 13,
         color: '#91919F'
+    },
+    noDataView: {
+        flex: 1,
+        marginTop: 250
+    },
+    noDataText: {
+        fontSize: 18,
+        color: '#91919F',
+        alignSelf: 'center'
     }
 });
 
