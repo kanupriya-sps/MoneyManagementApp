@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, StyleSheet, Dimensions, TouchableOpacity, Image } from "react-native";
+import { Text, View, StyleSheet, Dimensions, TouchableOpacity, Image, Alert } from "react-native";
 import PieChart from 'react-native-pie-chart';
 import ProgressBarComponent from "../components/ProgressBarComponent";
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -58,7 +58,7 @@ const StatiticsScreen = () => {
         const labels = Object.keys(groupedData);
 
         if (data.length === 0 || data.reduce((sum, value) => sum + value, 0) === 0) {
-            return { data: [1], labels: ['No Data'] };
+            return { data: [], labels: [] };
         }
         return { data, labels };
     };
@@ -96,14 +96,20 @@ const StatiticsScreen = () => {
                 placeholder="Month"
             />
             <View style={styles.pieContainer}>
-                <PieChart
-                    widthAndHeight={190}
-                    series={data}
-                    sliceColor={colors.slice(0, data.length)}
-                    coverRadius={0.7}
-                    coverFill={'#FFF6E5'}
-                />
-                <Text style={styles.totalAmountText}>₹ {totalAmount}</Text>
+                {data.length > 0 && totalAmount > 0 ? (
+                    <>
+                        <PieChart
+                            widthAndHeight={190}
+                            series={data}
+                            sliceColor={colors.slice(0, data.length)}
+                            coverRadius={0.7}
+                            coverFill={'#FFF6E5'}
+                        />
+                        <Text style={styles.totalAmountText}>₹ {totalAmount}</Text>
+                    </>
+                ) : (
+                    <Text style={styles.noDataText}>No transactions for {selectedMonth}</Text>
+                )}
             </View>
             <View style={styles.segmentContainer}>
                 <TouchableOpacity
@@ -132,7 +138,9 @@ const StatiticsScreen = () => {
                 </TouchableOpacity>
             </View>
             <View style={styles.ProgressBarComponentContainer}>
-                <ProgressBarComponent transactions={filteredTransactions} />
+                {data.length > 0 && totalAmount > 0 ? (
+                    <ProgressBarComponent transactions={filteredTransactions} />
+                ) : (<Text style={styles.noDataText}>No data found</Text>)}
             </View>
         </View>
     )
@@ -178,6 +186,13 @@ const styles = StyleSheet.create({
         fontSize: 25,
         fontWeight: '700',
         position: 'absolute'
+    },
+    noDataText: {
+        fontSize: 14,
+        color: 'grey',
+        fontWeight: '500',
+        textAlign: 'center',
+        marginTop: 50
     },
     segmentContainer: {
         height: 60,
