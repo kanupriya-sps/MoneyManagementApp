@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
     },
     ProgressBarComponentContainer: {
         marginTop: 20,
-        marginBottom: 50
+        marginBottom: 100
     }
 });
 

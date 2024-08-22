@@ -12,7 +12,12 @@ const ProgressBarComponent = ({ transactions }) => {
                             <View style={[styles.circle, { backgroundColor: transaction.color }]} />
                             <Text style={styles.label}>{transaction.category}</Text>
                         </View>
-                        <Text style={styles.amount}>{transaction.amount}</Text>
+                        <Text
+                            style={[
+                                styles.amount,
+                                { color: transaction.type === 'Income' ? '#00A86B' : '#FD3C4A' }
+                            ]}
+                        >{transaction.amount}</Text>
                     </View>
                     <Progress.Bar
                         progress={parseFloat(transaction.amount.replace(/[^\d.-]/g, '')) / 10000}

@@ -38,13 +38,17 @@ const TransactionsScreen = () => {
         const filterMatch = selectedFilter === 'All' || item.type === selectedFilter;
         return monthMatch && filterMatch;
     });
-
+    console.log("DATA: ", filteredData)
     const flatListItem = ({ item }) => {
         return (
             <View style={styles.listItemViewContainer}>
                 <View style={styles.listItemDetailContainer}>
                     <Text style={styles.categoryText}>{item.category}</Text>
-                    <Text style={styles.amountText}>{item.amount}</Text>
+                    <Text style={[
+                        styles.amountText,
+                        { color: item.type === 'Income' ? '#00A86B' : '#FD3C4A' }
+                    ]}
+                    >{item.amount}</Text>
                 </View>
                 <View style={styles.listItemDetailContainer}>
                     <Text style={styles.descriptionText}>{item.description}</Text>
@@ -136,10 +140,10 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(255, 255, 255, 1)',
     },
     listViewContainer: {
-        height: Dimensions.get('window').height,
+        height: Dimensions.get('window').height - 100,
         width: Dimensions.get('window').width,
         marginTop: 20,
-        marginBottom: 80,
+        marginBottom: 100,
         paddingHorizontal: 8
     },
     listItemViewContainer: {

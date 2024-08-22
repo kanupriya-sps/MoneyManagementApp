@@ -44,7 +44,7 @@ const AddTransactionScreen = () => {
             category: selectedCategory,
             description: selectedDescription,
             type: transactionType,
-            amount: transactionType === 'Income' ? `+ ${amount}` : `- ${amount}`, // Example amount, replace with your input
+            amount: transactionType === 'Income' ? `+ ${amount}` : `- ${amount}`,
             month: new Date(selectedDate).toLocaleString('default', { month: 'long' }),
             time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }),
             date: selectedDate
