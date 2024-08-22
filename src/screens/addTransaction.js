@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet, Dimensions, TouchableOpacity, Modal, TextInput, Keyboard, TouchableWithoutFeedback } from "react-native";
+import { Text, View, StyleSheet, Dimensions, TouchableOpacity, Modal, TextInput, Keyboard, TouchableWithoutFeedback , Alert} from "react-native";
 import { useDispatch } from 'react-redux';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Calendar } from 'react-native-calendars';
@@ -15,11 +15,12 @@ const AddTransactionScreen = () => {
     const [openCategory, setOpenCategory] = useState(false);
     const [selectedDescription, setSelectedDescription] = useState('Description');
     const [openDescription, setOpenDescription] = useState(false);
-    const [selectedDate, setSelectedDate] = useState('Pick your date');
+    const [selectedDate, setSelectedDate] = useState(null);
     const [isCalendarVisible, setIsCalendarVisible] = useState(false);
     const [transactionType, setTransactionType] = useState(null);
     const [amount, setAmount] = useState('');
     const [isFocused, setIsFocused] = useState(false);
+    const [isAmountValid, setIsAmountValid] = useState(true);
 
     const categories = [
         { label: 'Salary', value: 'Salary' },
@@ -63,6 +64,18 @@ const AddTransactionScreen = () => {
         navigation.navigate('TransactionsScreen');
     };
 
+    const validateAmount = (text) => {
+        const regex = /^\d*\.?\d{0,2}$/; // Regex to allow only numbers and up to 2 decimal places
+        if (regex.test(text) || text === "") {
+            setAmount(text);
+            setIsAmountValid(true);
+            isAmountValid == true;
+        } else {
+            setIsAmountValid(false);
+            Alert.alert("Invalid Input", "Please enter only numbers or upto two decimal place.");
+        }
+    };
+
     const isFormValid = () => {
         return (
             selectedCategory !== null &&
@@ -100,7 +113,7 @@ const AddTransactionScreen = () => {
                         style={styles.amountInput}
                         //placeholder="Enter amount"
                         value={amount}
-                        onChangeText={setAmount}
+                        onChangeText={validateAmount}
                         keyboardType="numeric"
                         returnKeyType="done"
                         onSubmitEditing={Keyboard.dismiss}
@@ -122,7 +135,6 @@ const AddTransactionScreen = () => {
                         onOpen={handleCategoryOpen}
                         zIndex={3000}
                         zIndexInverse={1000}
-
                     />
                     <DropDownPicker
                         open={openDescription}
@@ -137,7 +149,6 @@ const AddTransactionScreen = () => {
                         onOpen={handleDescriptionOpen}
                         zIndex={2000}
                         zIndexInverse={2000}
-
                     />
                     <View style={styles.flexColumnsWithButton}>
                         <TouchableOpacity
