@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet, Dimensions, TouchableOpacity, Modal, TextInput, Keyboard, TouchableWithoutFeedback , Alert} from "react-native";
+import { Text, View, StyleSheet, Dimensions, TouchableOpacity, Modal, TextInput, Keyboard, TouchableWithoutFeedback, Alert } from "react-native";
 import { useDispatch } from 'react-redux';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Calendar } from 'react-native-calendars';
@@ -154,12 +154,12 @@ const AddTransactionScreen = () => {
                         <TouchableOpacity
                             style={[styles.incomeButton, transactionType === 'Income' && styles.incomeButtonActive]}
                             onPress={() => setTransactionType('Income')}>
-                            <Text style={styles.incomeButtonText}>Income</Text>
+                            <Text style={transactionType === 'Income' ? styles.buttonActiveText : styles.buttonInactiveText}>Income</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={[styles.expenseButton, transactionType === 'Expense' && styles.expenseButtonActive]}
                             onPress={() => setTransactionType('Expense')}>
-                            <Text style={styles.expenseButtonText}>Expense</Text>
+                            <Text style={transactionType === 'Expense' ? styles.buttonActiveText : styles.buttonInactiveText}>Expense</Text>
                         </TouchableOpacity>
                     </View>
                     <TouchableOpacity style={styles.dateContainer} onPress={() => setIsCalendarVisible(!isCalendarVisible)}>
@@ -273,14 +273,18 @@ const styles = StyleSheet.create({
         columnGap: 12
     },
     incomeButton: {
-        backgroundColor: '#00A86B',
+        //  backgroundColor: '#00A86B',
         borderRadius: 14,
+        borderWidth: 1,
+        borderColor: 'black',
         width: 80
     },
     incomeButtonActive: {
         backgroundColor: '#00291a', // dark Green for income
+        borderWidth: 5,
+        borderColor: '#00291a',
     },
-    incomeButtonText: {
+    buttonActiveText: {
         fontSize: 14,
         fontWeight: 'bold',
         color: '#FFFFFF',
@@ -288,17 +292,20 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     expenseButton: {
-        backgroundColor: '#FD3C4A',
+       // backgroundColor: '#FD3C4A',
         borderRadius: 14,
+        borderWidth: 1,
+        borderColor: 'black',
         width: 80
     },
     expenseButtonActive: {
         backgroundColor: '#520107', // dark Red for expense
+        borderWidth : 5,
+        borderColor: '#520107'
     },
-    expenseButtonText: {
+    buttonInactiveText: {
         fontSize: 14,
-        fontWeight: 'bold',
-        color: '#FFFFFF',
+        color: 'black',
         padding: 5,
         alignSelf: 'center'
     },
