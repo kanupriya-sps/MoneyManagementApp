@@ -32,24 +32,31 @@ const HomeScreen = ({ navigation }) => {
     };
 
     const filterTransactionsArray = () => {
+        let filteredArray = [];
         switch (selectedItem) {
             case 'Today':
-                return transactions.filter(item => item.date === dateName)
+                filteredArray = transactions.filter(item => item.date === dateName);
+                break;
             case 'Week':
                 const endDate = new Date();
                 const startDate = new Date();
                 endDate.setDate(currentDate.getDate() + 6);
-                startDate.setDate(currentDate.getDate() - 1)
-                return transactions.filter(item => {
+                startDate.setDate(currentDate.getDate() - 1);
+                filteredArray = transactions.filter(item => {
                     const transactionDate = new Date(item.date);
                     return transactionDate >= startDate && transactionDate <= endDate;
                 });
+                break;
             case 'Month':
-                return transactions.filter(item => new Date(item.date).toLocaleString('en-US', { month: 'long' }) === monthName);
+                filteredArray = transactions.filter(item => new Date(item.date).toLocaleString('en-US', { month: 'long' }) === monthName);
+                break;
             case 'Year':
-                return transactions.filter(item => new Date(item.date).getFullYear() === yearName);
+                filteredArray = transactions.filter(item => new Date(item.date).getFullYear() === yearName);
+                break;
         }
+        return filteredArray.reverse(); // Reverse the filtered array
     };
+    
 
     useEffect(() => {
         setFilteredTransactions(filterTransactionsArray());

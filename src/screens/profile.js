@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { StyleSheet, Text, View, Dimensions, Image, TouchableOpacity, TextInput, Keyboard } from "react-native";
+import { StyleSheet, Text, View, Dimensions, Image, TouchableOpacity, TextInput, Keyboard, Alert } from "react-native";
 import { useSelector, useDispatch } from 'react-redux';
 import { setUpdatedUsername } from "../redux/actions";
 import { logo, edit, account, settings, upload, logout } from '../utils/images';
@@ -26,6 +26,26 @@ const ProfileScreen = ({ navigation }) => {
         setIsEditable(false);
     };
 
+    const handleTextChange = (text) => {
+        const alphabetOnly = /^[A-Za-z]*$/; // Regular expression to allow only alphabets
+
+        if (alphabetOnly.test(text)) {
+            dispatch(setUpdatedUsername(text)); // Update username if the input is valid
+        } else {
+            Alert.alert('Invalid Input', 'Only alphabets are allowed.');
+        }
+    };
+
+    const handlePaste = (e) => {
+        const pastedText = e.nativeEvent.text;
+        const alphabetOnly = /^[A-Za-z]*$/;
+
+        if (!alphabetOnly.test(pastedText)) {
+            e.preventDefault();
+            Alert.alert('Invalid Input', 'Only alphabets are allowed.');
+        }
+    };
+
     const handleLogoutPress = () => {
         navigation.navigate('MainScreen')
     };
@@ -46,12 +66,13 @@ const ProfileScreen = ({ navigation }) => {
                         ref={inputRef}
                         style={[styles.nameInput, { borderBottomWidth: isEditable ? 1 : 0 }]}
                         value={username}
-                        onChangeText={(text) => dispatch(setUpdatedUsername(text))}
+                        onChangeText={handleTextChange}
                         editable={isEditable}
                         keyboardType='default'
                         returnKeyType="done"
                         onSubmitEditing={handleDonePress}
                         maxLength={20}
+                        onPaste={handlePaste} 
                     />
                 </View>
                 <View>
@@ -136,8 +157,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
         color: '#161719',
         textAlign: 'center',
-
-        borderBottomColor: '#AD00FF',
+        borderBottomColor: '#AD00FF'
     },
     editContainer: {
         alignItems: 'center',
